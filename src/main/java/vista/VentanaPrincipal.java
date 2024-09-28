@@ -331,7 +331,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             FileReader lectorArchivo = new FileReader(archivoActual.getSelectedFile().getPath());
             Lexico lexer = new Lexico(lectorArchivo);
             lexer.next_token();
-            lexer.
         } catch (FileNotFoundException ex) {
             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
