@@ -1,8 +1,11 @@
 package vista;
 
+import analizadorLexico.Lexico;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -82,6 +85,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         bArchivoGuardar = new javax.swing.JMenuItem();
         bArchivoGuardarComo = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        bAnalizar = new javax.swing.JMenuItem();
         bArchivoSalir = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -131,6 +135,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         botonArchivo.add(bArchivoGuardarComo);
         botonArchivo.add(jSeparator1);
+
+        bAnalizar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        bAnalizar.setText("Analizar");
+        bAnalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bAnalizarActionPerformed(evt);
+            }
+        });
+        botonArchivo.add(bAnalizar);
 
         bArchivoSalir.setText("Salir");
         bArchivoSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -307,6 +320,25 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_bArchivoGuardarActionPerformed
 
+    private void bAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAnalizarActionPerformed
+        if (archivoActual.getSelectedFile() == null){
+            int guardado = guardarArchivoComo();
+            if (guardado == 1){
+                return;
+            }
+        }
+        try {
+            FileReader lectorArchivo = new FileReader(archivoActual.getSelectedFile().getPath());
+            Lexico lexer = new Lexico(lectorArchivo);
+            lexer.next_token();
+            lexer.
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_bAnalizarActionPerformed
+
 
     public static void main(String args[]) {
         
@@ -319,6 +351,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem bAnalizar;
     private javax.swing.JMenuItem bArchivoAbrir;
     private javax.swing.JMenuItem bArchivoGuardar;
     private javax.swing.JMenuItem bArchivoGuardarComo;
