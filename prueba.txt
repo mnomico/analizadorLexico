@@ -1,0 +1,49 @@
+a__
+
+DECLARE.SECTION
+[a, b, c] := [INT, FLOAT, STRING]
+[d, e] := [INT, FLOAT]
+ENDDECLARE.SECTION
+
+PROGRAM.SECTION
+//* Ejemplo de ciclo WHILE *//
+WHILE (a < 10)
+  a ::= a + 1;
+ENDWHILE
+
+//* Ejemplo de IF-THEN-ELSE *//
+IF (b >= 5.0) THEN
+  c ::= "Mayor o igual que 5";
+ELSE
+  c ::= "Menor que 5";
+ENDIF
+
+//* Asignaciones simples *//
+a ::= 99999.99;
+a::= 99.;
+a::= .9999;
+c ::= "HOLA MUNDO";
+a_b ::= "pruebacon_"
+
+//* Escritura de valores *//
+WRITE "@sdADaSjfla%dfg";
+WRITE 99.999;
+WRITE var;
+
+//* Este es un comentario anidado
+IF (a <= 30)
+  b ::= "correcto"  asignacion string dentro del comentario
+ENDIF
+*//
+
+// y este un comentario de linea
+
+//* Constantes en binario *//
+x ::= 0b101010;
+y ::= 0b1101;
+
+//* Ejemplo de la función TAKE *//
+resul ::= TAKE(+; a; [3, 5, 7]);
+resul ::= TAKE(*; a; [1, 2, 3]);
+resul ::= TAKE(+; b; []); //* lista vacía *//
+ENDPROGRAM.SECTION
