@@ -19,6 +19,8 @@ import javax.swing.text.BadLocationException;
 
 public class VentanaPrincipal extends javax.swing.JFrame {
 
+    public static StringBuilder je = new StringBuilder();
+    public static boolean error = false;
     /**
      * Creates new form TextFrame
      */
@@ -90,6 +92,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelTexto = new javax.swing.JEditorPane();
         jToolBar1 = new javax.swing.JToolBar();
         lnCol = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        consola = new javax.swing.JTextArea();
         barraMenu = new javax.swing.JMenuBar();
         botonArchivo = new javax.swing.JMenu();
         bArchivoNuevo = new javax.swing.JMenuItem();
@@ -109,8 +114,24 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jToolBar1.setFocusable(false);
 
         lnCol.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lnCol.setText(" Ln: 1 Col: 1 ");
+        lnCol.setText(" Ln 1  Col 1 ");
         jToolBar1.add(lnCol);
+
+        consola.setEditable(false);
+        consola.setColumns(20);
+        consola.setRows(5);
+        jScrollPane2.setViewportView(consola);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
+        );
 
         botonArchivo.setText("Archivo");
         botonArchivo.addActionListener(new java.awt.event.ActionListener() {
@@ -183,12 +204,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
-                .addGap(2, 2, 2)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -207,6 +231,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_bArchivoSalirActionPerformed
 
     private void bAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAnalizarActionPerformed
+        consola.setText("");
         if (archivoActual.getSelectedFile() == null){
             int guardado = guardarArchivoComo();
             if (guardado == 1){
@@ -218,10 +243,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             Lexico lexer = new Lexico(lectorArchivo);
             //TODO hacer que Lexer retorne valores y a partir de ahi hacer cosas
             lexer.next_token();
+            if (error){
+                consola.setText(je.toString());
+            }else {
+                consola.setText(je.toString());
+                je=new StringBuilder();}
+
         } catch (FileNotFoundException ex) {
             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Error ex){
+            consola.append("Error: " + ex.getMessage() + "\n");
         }
     }//GEN-LAST:event_bAnalizarActionPerformed
 
@@ -270,6 +303,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         } else abrirArchivo();
 
     }//GEN-LAST:event_bArchivoAbrirActionPerformed
+
+    public void actualizar(String s){
+        consola.append(s);
+    }
 
     private void bArchivoNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bArchivoNuevoActionPerformed
         if (modificado){
@@ -383,7 +420,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem bArchivoSalir;
     private javax.swing.JMenuBar barraMenu;
     private javax.swing.JMenu botonArchivo;
+    private javax.swing.JTextArea consola;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lnCol;
