@@ -31,7 +31,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setTitle("Nuevo archivo - Analizador Léxico");
         setVisible(true);
-        lnCol.setText("Ln: " + 1 + " Col: " + 1);
         
         addWindowListener(new WindowAdapter(){
             @Override
@@ -52,7 +51,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             int posicion = panelTexto.getCaretPosition();
             int linea = panelTexto.getDocument().getDefaultRootElement().getElementIndex(posicion) + 1;
             int columna = posicion - panelTexto.getDocument().getDefaultRootElement().getElement(linea - 1).getStartOffset() + 1;
-            lnCol.setText("Ln: " + linea + " Col: " + columna);
+            lnCol.setText(" Ln: " + linea + " Col: " + columna);
         });
         
         panelTexto.getDocument().addDocumentListener(new DocumentListener() {
@@ -105,11 +104,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(panelTexto);
 
+        jToolBar1.setBorder(null);
         jToolBar1.setRollover(true);
         jToolBar1.setFocusable(false);
 
         lnCol.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lnCol.setText("Ln  Col  ");
+        lnCol.setText(" Ln: 1 Col: 1 ");
         jToolBar1.add(lnCol);
 
         botonArchivo.setText("Archivo");
@@ -216,6 +216,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         try {
             FileReader lectorArchivo = new FileReader(archivoActual.getSelectedFile().getPath());
             Lexico lexer = new Lexico(lectorArchivo);
+            //TODO hacer que Lexer retorne valores y a partir de ahi hacer cosas
             lexer.next_token();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);

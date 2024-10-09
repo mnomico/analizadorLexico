@@ -4,6 +4,19 @@
     <groupId>nomico</groupId>
     <artifactId>analizadorLexico</artifactId>
     <version>1.0</version>
+    <dependencies>
+        <dependency>
+    <groupId>org.netbeans.external</groupId>
+    <artifactId>java-cup-11a</artifactId>
+    <version>RELEASE230</version>
+</dependency>
+        <dependency>
+            <groupId>de.jflex</groupId>
+            <artifactId>jflex</artifactId>
+            <version>1.9.1</version>
+            </dependency>
+    </dependencies>
+
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
