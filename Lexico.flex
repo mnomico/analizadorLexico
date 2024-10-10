@@ -17,7 +17,7 @@ import vista.VentanaPrincipal;
 LETRA = [a-zA-Z]
 DIGITO = [0-9]
 ESPACIO = [ \t\f\n\r\n]+
-ID = {LETRA} ({LETRA} | {DIGITO} | _ ({DIGITO}|{LETRA}) )*
+ID = ( _ | {LETRA} ) ({LETRA} | {DIGITO} | _ ({DIGITO}|{LETRA}) )*
 CONST_FLOAT = \-?{DIGITO}+\.{DIGITO}+ | \-?\.{DIGITO}+ | \-?{DIGITO}+\.
 CONST_INT = \-?{DIGITO}+
 CONST_BIN = (0b).(0|1)+
