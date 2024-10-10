@@ -1,0 +1,15 @@
+
+| NOMBRE   | TOKEN       | TIPO   | VALOR        | LONG  |
+|----------|-------------|--------|--------------|-------|
+| a        | CONST_FLOAT | ---    | 99999.99     | ---   |
+| b        | CONST_FLOAT | ---    | 99.          | ---   |
+| c        | CONST_STR   | ---    | HOLA MUNDO   | 10    |
+| d        | CONST_FLOAT | ---    | .9999        | ---   |
+| e        | ID          | ---    | ---          | ---   |
+| a_b      | CONST_STR   | ---    | pruebacon_   | 11    |
+| _b       | CONST_INT   | ---    | ---          | ---   |
+| x        | CONST_BIN   | ---    | 101010       | ---   |
+| y        | CONST_BIN   | ---    | 1101         | ---   |
+| resul    | CONST_INT   | ---    | ---          | ---   |
+| var      | ID          | ---    | ---          | ---   |
+
