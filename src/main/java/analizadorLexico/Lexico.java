@@ -3,6 +3,8 @@
 // source: Lexico.flex
 
 package analizadorLexico;
+import java_cup.runtime.*;
+import java.util.*;
 import java.lang.*;
 import jflex.core.sym;
 import vista.VentanaPrincipal;
@@ -101,7 +103,7 @@ public class Lexico implements java_cup.runtime.Scanner {
   private static final String ZZ_ACTION_PACKED_0 =
     "\1\0\1\1\1\2\1\3\2\1\1\4\1\5\1\6"+
     "\1\7\1\10\1\11\1\1\1\12\2\13\1\1\1\14"+
-    "\1\15\1\1\1\16\11\17\1\20\1\21\1\1\1\22"+
+    "\1\15\1\1\1\16\11\17\1\20\1\21\2\1\1\22"+
     "\1\0\1\23\1\24\1\0\1\25\3\0\1\26\1\27"+
     "\1\30\1\31\1\0\4\17\1\32\7\17\1\33\1\0"+
     "\1\23\1\0\1\2\2\0\1\34\4\17\1\35\6\17"+
@@ -119,7 +121,7 @@ public class Lexico implements java_cup.runtime.Scanner {
     "\1\0\2\23";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[216];
+    int [] result = new int[217];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -148,32 +150,33 @@ public class Lexico implements java_cup.runtime.Scanner {
     "\0\60\0\60\0\60\0\u0120\0\u0150\0\u0180\0\u01b0\0\u01e0"+
     "\0\u0210\0\60\0\u0240\0\u0270\0\u02a0\0\u02d0\0\u0300\0\u0330"+
     "\0\u0360\0\u0390\0\u03c0\0\u03f0\0\u0420\0\u0450\0\60\0\60"+
-    "\0\u0480\0\60\0\u04b0\0\u04b0\0\60\0\u0150\0\u0150\0\u04e0"+
-    "\0\u0510\0\u0540\0\60\0\60\0\60\0\60\0\u0570\0\u05a0"+
-    "\0\u05d0\0\u0600\0\u0630\0\u02d0\0\u0660\0\u0690\0\u06c0\0\u06f0"+
-    "\0\u0720\0\u0750\0\u0780\0\60\0\u07b0\0\u07b0\0\u07e0\0\60"+
-    "\0\u0810\0\u0840\0\60\0\u0870\0\u08a0\0\u08d0\0\u0900\0\u02d0"+
-    "\0\u0930\0\u0960\0\u0990\0\u09c0\0\u09f0\0\u0a20\0\u0a50\0\u0a50"+
-    "\0\u0a80\0\u0ab0\0\u0840\0\u0ae0\0\u02d0\0\u0b10\0\u0b40\0\u0b70"+
-    "\0\u0ba0\0\u0bd0\0\u02d0\0\u02d0\0\u0c00\0\u0c30\0\u0c60\0\u0c60"+
-    "\0\u0a80\0\u0c90\0\u0cc0\0\u0cf0\0\u0d20\0\u0d50\0\u0d80\0\u02d0"+
-    "\0\u0db0\0\u0de0\0\u02d0\0\u02d0\0\u0e10\0\u0e10\0\u0e40\0\u0e70"+
-    "\0\u0ea0\0\u07e0\0\u0ed0\0\u0f00\0\u0f30\0\u0f60\0\u02d0\0\u0f90"+
-    "\0\u0f90\0\u0fc0\0\u0ff0\0\u1020\0\u1050\0\u1080\0\u10b0\0\u10e0"+
-    "\0\u10e0\0\u1110\0\u0810\0\u1140\0\u1170\0\u11a0\0\u11d0\0\u1200"+
-    "\0\u1200\0\u1230\0\u1260\0\u1290\0\u12c0\0\u12f0\0\u12f0\0\u1320"+
-    "\0\u1350\0\u1380\0\u13b0\0\u13e0\0\u13e0\0\u1410\0\u1440\0\u1470"+
-    "\0\u14a0\0\u14d0\0\u14d0\0\u1500\0\u1530\0\u1560\0\u1590\0\u15c0"+
-    "\0\u15c0\0\u15f0\0\u1620\0\u1650\0\u1680\0\u16b0\0\u16b0\0\u16e0"+
-    "\0\u1710\0\u1740\0\u1770\0\u17a0\0\u17a0\0\60\0\u17d0\0\u1800"+
-    "\0\60\0\u1830\0\u1830\0\u1860\0\u1890\0\u18c0\0\u18c0\0\u18f0"+
-    "\0\u1920\0\u1950\0\u1950\0\60\0\60\0\u1980\0\u1980\0\u19b0"+
-    "\0\u19b0\0\u19e0\0\u19e0\0\u1a10\0\u1a10\0\u1a40\0\u1a40\0\u1a70"+
-    "\0\u1a70\0\u1aa0\0\u1aa0\0\u1ad0\0\u1ad0\0\u1b00\0\u1b00\0\u1b30"+
-    "\0\u1b30\0\u1b60\0\u1b60\0\u1b90\0\u1b90\0\u1bc0\0\u1bc0\0\60";
+    "\0\u0480\0\u04b0\0\60\0\u04e0\0\u04e0\0\60\0\u0150\0\u0150"+
+    "\0\u0510\0\u0540\0\u0570\0\60\0\60\0\60\0\60\0\u0480"+
+    "\0\u05a0\0\u05d0\0\u0600\0\u0630\0\u02d0\0\u0660\0\u0690\0\u06c0"+
+    "\0\u06f0\0\u0720\0\u0750\0\u0780\0\60\0\u07b0\0\u07b0\0\u07e0"+
+    "\0\60\0\u0810\0\u0840\0\60\0\u0870\0\u08a0\0\u08d0\0\u0900"+
+    "\0\u02d0\0\u0930\0\u0960\0\u0990\0\u09c0\0\u09f0\0\u0a20\0\u0a50"+
+    "\0\u0a50\0\u0a80\0\u0ab0\0\u0840\0\u0ae0\0\u02d0\0\u0b10\0\u0b40"+
+    "\0\u0b70\0\u0ba0\0\u0bd0\0\u02d0\0\u02d0\0\u0c00\0\u0c30\0\u0c60"+
+    "\0\u0c60\0\u0a80\0\u0c90\0\u0cc0\0\u0cf0\0\u0d20\0\u0d50\0\u0d80"+
+    "\0\u02d0\0\u0db0\0\u0de0\0\u02d0\0\u02d0\0\u0e10\0\u0e10\0\u0e40"+
+    "\0\u0e70\0\u0ea0\0\u07e0\0\u0ed0\0\u0f00\0\u0f30\0\u0f60\0\u02d0"+
+    "\0\u0f90\0\u0f90\0\u0fc0\0\u0ff0\0\u1020\0\u1050\0\u1080\0\u10b0"+
+    "\0\u10e0\0\u10e0\0\u1110\0\u0810\0\u1140\0\u1170\0\u11a0\0\u11d0"+
+    "\0\u1200\0\u1200\0\u1230\0\u1260\0\u1290\0\u12c0\0\u12f0\0\u12f0"+
+    "\0\u1320\0\u1350\0\u1380\0\u13b0\0\u13e0\0\u13e0\0\u1410\0\u1440"+
+    "\0\u1470\0\u14a0\0\u14d0\0\u14d0\0\u1500\0\u1530\0\u1560\0\u1590"+
+    "\0\u15c0\0\u15c0\0\u15f0\0\u1620\0\u1650\0\u1680\0\u16b0\0\u16b0"+
+    "\0\u16e0\0\u1710\0\u1740\0\u1770\0\u17a0\0\u17a0\0\60\0\u17d0"+
+    "\0\u1800\0\60\0\u1830\0\u1830\0\u1860\0\u1890\0\u18c0\0\u18c0"+
+    "\0\u18f0\0\u1920\0\u1950\0\u1950\0\60\0\60\0\u1980\0\u1980"+
+    "\0\u19b0\0\u19b0\0\u19e0\0\u19e0\0\u1a10\0\u1a10\0\u1a40\0\u1a40"+
+    "\0\u1a70\0\u1a70\0\u1aa0\0\u1aa0\0\u1ad0\0\u1ad0\0\u1b00\0\u1b00"+
+    "\0\u1b30\0\u1b30\0\u1b60\0\u1b60\0\u1b90\0\u1b90\0\u1bc0\0\u1bc0"+
+    "\0\60";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[216];
+    int [] result = new int[217];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -200,115 +203,115 @@ public class Lexico implements java_cup.runtime.Scanner {
     "\1\10\1\11\1\12\1\13\1\14\1\15\1\16\1\17"+
     "\2\20\1\21\1\22\1\23\1\24\1\25\3\26\1\27"+
     "\1\30\1\31\2\26\1\32\5\26\1\33\1\26\1\34"+
-    "\1\35\1\36\1\37\1\40\2\26\1\41\61\0\2\3"+
-    "\1\0\1\3\101\0\1\42\31\0\2\43\3\0\1\43"+
-    "\1\44\51\43\7\0\1\45\66\0\1\46\1\0\3\20"+
-    "\55\0\3\47\54\0\1\50\56\0\1\47\1\0\3\20"+
-    "\33\0\1\51\17\0\1\47\1\0\3\20\60\0\1\52"+
-    "\2\0\1\53\57\0\1\54\57\0\1\55\57\0\1\56"+
-    "\51\0\3\26\5\0\23\26\2\0\1\57\1\26\21\0"+
-    "\3\26\5\0\4\26\1\60\16\26\2\0\1\57\1\26"+
-    "\21\0\3\26\5\0\12\26\1\61\1\26\1\62\6\26"+
-    "\2\0\1\57\1\26\21\0\3\26\5\0\12\26\1\63"+
-    "\10\26\2\0\1\57\1\26\21\0\3\26\5\0\5\26"+
-    "\1\64\6\26\1\65\6\26\2\0\1\57\1\26\21\0"+
-    "\3\26\5\0\17\26\1\66\3\26\2\0\1\57\1\26"+
-    "\21\0\3\26\5\0\21\26\1\67\1\26\2\0\1\57"+
-    "\1\26\21\0\3\26\5\0\1\70\6\26\1\71\13\26"+
-    "\2\0\1\57\1\26\21\0\3\26\5\0\7\26\1\72"+
-    "\7\26\1\73\3\26\2\0\1\57\1\26\60\0\1\74"+
-    "\2\75\3\0\1\75\1\76\51\75\2\77\1\100\7\77"+
-    "\1\101\45\77\2\102\3\0\53\102\26\0\1\103\51\0"+
-    "\3\26\5\0\23\26\3\0\1\26\21\0\3\26\5\0"+
-    "\2\26\1\104\20\26\2\0\1\57\1\26\21\0\3\26"+
-    "\5\0\20\26\1\105\2\26\2\0\1\57\1\26\21\0"+
-    "\3\26\5\0\3\26\1\106\17\26\2\0\1\57\1\26"+
-    "\21\0\3\26\5\0\15\26\1\107\5\26\2\0\1\57"+
-    "\1\26\21\0\3\26\5\0\21\26\1\110\1\26\2\0"+
-    "\1\57\1\26\21\0\3\26\5\0\15\26\1\111\5\26"+
-    "\2\0\1\57\1\26\21\0\3\26\5\0\17\26\1\112"+
-    "\3\26\2\0\1\57\1\26\21\0\3\26\5\0\11\26"+
-    "\1\113\11\26\2\0\1\57\1\26\21\0\3\26\5\0"+
-    "\4\26\1\114\16\26\2\0\1\57\1\26\21\0\3\26"+
-    "\5\0\10\26\1\115\12\26\2\0\1\57\1\26\21\0"+
-    "\3\26\5\0\10\26\1\116\12\26\2\0\1\57\1\26"+
-    "\1\0\2\117\3\0\1\117\1\120\51\117\2\77\1\100"+
-    "\55\77\2\101\1\121\7\101\1\122\45\101\20\0\2\123"+
-    "\56\0\3\26\5\0\12\26\1\124\10\26\2\0\1\57"+
-    "\1\26\21\0\3\26\5\0\4\26\1\125\16\26\2\0"+
-    "\1\57\1\26\21\0\3\26\5\0\3\26\1\126\12\26"+
-    "\1\127\4\26\2\0\1\57\1\26\21\0\3\26\5\0"+
-    "\1\130\22\26\2\0\1\57\1\26\21\0\3\26\5\0"+
-    "\6\26\1\131\14\26\2\0\1\57\1\26\21\0\3\26"+
-    "\5\0\10\26\1\132\12\26\2\0\1\57\1\26\21\0"+
-    "\3\26\5\0\4\26\1\133\16\26\2\0\1\57\1\26"+
-    "\21\0\3\26\5\0\14\26\1\134\6\26\2\0\1\57"+
-    "\1\26\21\0\3\26\5\0\12\26\1\135\10\26\2\0"+
-    "\1\57\1\26\21\0\3\26\5\0\21\26\1\136\1\26"+
-    "\2\0\1\57\1\26\1\0\2\137\3\0\1\137\1\140"+
-    "\51\137\12\141\1\142\45\141\2\101\1\121\7\101\1\143"+
-    "\4\101\1\144\40\101\20\0\3\26\5\0\1\145\22\26"+
-    "\2\0\1\57\1\26\21\0\3\26\5\0\4\26\1\146"+
-    "\16\26\2\0\1\57\1\26\21\0\3\26\5\0\17\26"+
-    "\1\147\3\26\2\0\1\57\1\26\21\0\3\26\5\0"+
-    "\21\26\1\150\1\26\2\0\1\57\1\26\21\0\3\26"+
-    "\5\0\17\26\1\151\3\26\2\0\1\57\1\26\21\0"+
-    "\3\26\5\0\14\26\1\152\6\26\2\0\1\57\1\26"+
-    "\21\0\3\26\5\0\4\26\1\153\16\26\2\0\1\57"+
+    "\1\35\1\36\1\37\1\40\1\41\1\26\1\42\61\0"+
+    "\2\3\1\0\1\3\101\0\1\43\31\0\2\44\3\0"+
+    "\1\44\1\45\51\44\7\0\1\46\66\0\1\47\1\0"+
+    "\3\20\55\0\3\50\54\0\1\51\56\0\1\50\1\0"+
+    "\3\20\33\0\1\52\17\0\1\50\1\0\3\20\60\0"+
+    "\1\53\2\0\1\54\57\0\1\55\57\0\1\56\57\0"+
+    "\1\57\51\0\3\26\5\0\23\26\2\0\1\60\1\26"+
+    "\21\0\3\26\5\0\4\26\1\61\16\26\2\0\1\60"+
+    "\1\26\21\0\3\26\5\0\12\26\1\62\1\26\1\63"+
+    "\6\26\2\0\1\60\1\26\21\0\3\26\5\0\12\26"+
+    "\1\64\10\26\2\0\1\60\1\26\21\0\3\26\5\0"+
+    "\5\26\1\65\6\26\1\66\6\26\2\0\1\60\1\26"+
+    "\21\0\3\26\5\0\17\26\1\67\3\26\2\0\1\60"+
+    "\1\26\21\0\3\26\5\0\21\26\1\70\1\26\2\0"+
+    "\1\60\1\26\21\0\3\26\5\0\1\71\6\26\1\72"+
+    "\13\26\2\0\1\60\1\26\21\0\3\26\5\0\7\26"+
+    "\1\73\7\26\1\74\3\26\2\0\1\60\1\26\21\0"+
+    "\3\26\5\0\23\26\3\0\1\26\60\0\1\75\2\76"+
+    "\3\0\1\76\1\77\51\76\2\100\1\101\7\100\1\102"+
+    "\45\100\2\103\3\0\53\103\26\0\1\104\51\0\3\26"+
+    "\5\0\2\26\1\105\20\26\2\0\1\60\1\26\21\0"+
+    "\3\26\5\0\20\26\1\106\2\26\2\0\1\60\1\26"+
+    "\21\0\3\26\5\0\3\26\1\107\17\26\2\0\1\60"+
+    "\1\26\21\0\3\26\5\0\15\26\1\110\5\26\2\0"+
+    "\1\60\1\26\21\0\3\26\5\0\21\26\1\111\1\26"+
+    "\2\0\1\60\1\26\21\0\3\26\5\0\15\26\1\112"+
+    "\5\26\2\0\1\60\1\26\21\0\3\26\5\0\17\26"+
+    "\1\113\3\26\2\0\1\60\1\26\21\0\3\26\5\0"+
+    "\11\26\1\114\11\26\2\0\1\60\1\26\21\0\3\26"+
+    "\5\0\4\26\1\115\16\26\2\0\1\60\1\26\21\0"+
+    "\3\26\5\0\10\26\1\116\12\26\2\0\1\60\1\26"+
+    "\21\0\3\26\5\0\10\26\1\117\12\26\2\0\1\60"+
+    "\1\26\1\0\2\120\3\0\1\120\1\121\51\120\2\100"+
+    "\1\101\55\100\2\102\1\122\7\102\1\123\45\102\20\0"+
+    "\2\124\56\0\3\26\5\0\12\26\1\125\10\26\2\0"+
+    "\1\60\1\26\21\0\3\26\5\0\4\26\1\126\16\26"+
+    "\2\0\1\60\1\26\21\0\3\26\5\0\3\26\1\127"+
+    "\12\26\1\130\4\26\2\0\1\60\1\26\21\0\3\26"+
+    "\5\0\1\131\22\26\2\0\1\60\1\26\21\0\3\26"+
+    "\5\0\6\26\1\132\14\26\2\0\1\60\1\26\21\0"+
+    "\3\26\5\0\10\26\1\133\12\26\2\0\1\60\1\26"+
+    "\21\0\3\26\5\0\4\26\1\134\16\26\2\0\1\60"+
+    "\1\26\21\0\3\26\5\0\14\26\1\135\6\26\2\0"+
+    "\1\60\1\26\21\0\3\26\5\0\12\26\1\136\10\26"+
+    "\2\0\1\60\1\26\21\0\3\26\5\0\21\26\1\137"+
+    "\1\26\2\0\1\60\1\26\1\0\2\140\3\0\1\140"+
+    "\1\141\51\140\12\142\1\143\45\142\2\102\1\122\7\102"+
+    "\1\144\4\102\1\145\40\102\20\0\3\26\5\0\1\146"+
+    "\22\26\2\0\1\60\1\26\21\0\3\26\5\0\4\26"+
+    "\1\147\16\26\2\0\1\60\1\26\21\0\3\26\5\0"+
+    "\17\26\1\150\3\26\2\0\1\60\1\26\21\0\3\26"+
+    "\5\0\21\26\1\151\1\26\2\0\1\60\1\26\21\0"+
+    "\3\26\5\0\17\26\1\152\3\26\2\0\1\60\1\26"+
+    "\21\0\3\26\5\0\14\26\1\153\6\26\2\0\1\60"+
     "\1\26\21\0\3\26\5\0\4\26\1\154\16\26\2\0"+
-    "\1\57\1\26\1\0\2\155\3\0\1\155\1\156\51\155"+
-    "\12\141\1\157\4\141\1\160\40\141\2\101\1\121\7\101"+
-    "\1\161\45\101\2\77\1\100\14\77\1\162\40\77\20\0"+
-    "\3\26\5\0\17\26\1\163\3\26\2\0\1\57\1\26"+
-    "\21\0\3\26\5\0\2\26\1\164\20\26\2\0\1\57"+
-    "\1\26\21\0\3\26\5\0\15\26\1\165\5\26\2\0"+
-    "\1\57\1\26\21\0\3\26\5\0\1\166\22\26\2\0"+
-    "\1\57\1\26\21\0\3\26\5\0\6\26\1\167\14\26"+
-    "\2\0\1\57\1\26\1\0\2\170\3\0\1\170\1\171"+
-    "\51\170\12\141\1\172\45\141\17\0\1\100\40\0\2\101"+
-    "\1\121\7\101\1\161\4\101\1\173\40\101\20\0\3\26"+
-    "\5\0\4\26\1\174\16\26\2\0\1\57\1\26\21\0"+
-    "\3\26\5\0\12\26\1\175\10\26\2\0\1\57\1\26"+
-    "\21\0\3\26\5\0\6\26\1\176\14\26\2\0\1\57"+
-    "\1\26\21\0\3\26\5\0\13\26\1\177\7\26\2\0"+
-    "\1\57\1\26\1\0\2\200\3\0\1\200\1\201\51\200"+
-    "\12\141\1\172\4\141\1\202\40\141\2\101\1\121\7\101"+
-    "\1\122\4\101\1\203\40\101\16\0\1\204\1\0\3\26"+
-    "\5\0\23\26\2\0\1\57\1\26\21\0\3\26\5\0"+
-    "\1\205\22\26\2\0\1\57\1\26\21\0\3\26\5\0"+
-    "\17\26\1\206\3\26\2\0\1\57\1\26\17\0\1\207"+
-    "\1\0\3\26\5\0\23\26\2\0\1\57\1\26\1\0"+
-    "\2\210\3\0\1\210\1\211\51\210\12\141\1\142\4\141"+
-    "\1\121\40\141\50\0\1\212\27\0\3\26\5\0\17\26"+
-    "\1\213\3\26\2\0\1\57\1\26\21\0\3\26\5\0"+
-    "\1\214\22\26\2\0\1\57\1\26\51\0\1\215\7\0"+
-    "\2\216\3\0\1\216\1\217\51\216\34\0\1\220\43\0"+
-    "\3\26\5\0\4\26\1\221\16\26\2\0\1\57\1\26"+
-    "\21\0\3\26\5\0\13\26\1\222\7\26\2\0\1\57"+
-    "\1\26\35\0\1\223\23\0\2\224\3\0\1\224\1\225"+
-    "\51\224\32\0\1\226\43\0\1\227\1\0\3\26\5\0"+
-    "\23\26\2\0\1\57\1\26\17\0\1\230\1\0\3\26"+
-    "\5\0\23\26\2\0\1\57\1\26\33\0\1\231\25\0"+
-    "\2\232\3\0\1\232\1\233\51\232\51\0\1\234\56\0"+
-    "\1\235\57\0\1\236\60\0\1\237\6\0\2\240\3\0"+
-    "\1\240\1\241\51\240\40\0\1\242\53\0\1\243\57\0"+
-    "\1\244\63\0\1\245\17\0\2\246\3\0\1\246\1\247"+
-    "\51\246\45\0\1\250\44\0\1\251\57\0\1\252\72\0"+
-    "\1\253\12\0\2\254\3\0\1\254\1\255\51\254\44\0"+
-    "\1\256\64\0\1\257\57\0\1\260\52\0\1\261\13\0"+
-    "\2\262\3\0\1\262\1\263\51\262\40\0\1\264\57\0"+
-    "\1\265\17\0\2\266\3\0\1\266\1\267\51\266\45\0"+
-    "\1\270\57\0\1\271\12\0\2\272\3\0\1\272\1\273"+
-    "\51\272\44\0\1\274\57\0\1\275\13\0\2\276\3\0"+
-    "\1\276\1\277\51\276\2\300\3\0\1\300\1\301\51\300"+
-    "\2\302\3\0\1\302\1\303\51\302\2\304\3\0\1\304"+
-    "\1\305\51\304\2\306\3\0\1\306\1\307\51\306\2\310"+
-    "\3\0\1\310\1\311\51\310\2\312\3\0\1\312\1\313"+
-    "\51\312\2\314\3\0\1\314\1\315\51\314\2\316\3\0"+
-    "\1\316\1\317\51\316\2\320\3\0\1\320\1\321\51\320"+
-    "\2\322\3\0\1\322\1\323\51\322\2\324\3\0\1\324"+
-    "\1\325\51\324\2\326\3\0\1\326\1\327\51\326\6\0"+
-    "\1\330\51\0";
+    "\1\60\1\26\21\0\3\26\5\0\4\26\1\155\16\26"+
+    "\2\0\1\60\1\26\1\0\2\156\3\0\1\156\1\157"+
+    "\51\156\12\142\1\160\4\142\1\161\40\142\2\102\1\122"+
+    "\7\102\1\162\45\102\2\100\1\101\14\100\1\163\40\100"+
+    "\20\0\3\26\5\0\17\26\1\164\3\26\2\0\1\60"+
+    "\1\26\21\0\3\26\5\0\2\26\1\165\20\26\2\0"+
+    "\1\60\1\26\21\0\3\26\5\0\15\26\1\166\5\26"+
+    "\2\0\1\60\1\26\21\0\3\26\5\0\1\167\22\26"+
+    "\2\0\1\60\1\26\21\0\3\26\5\0\6\26\1\170"+
+    "\14\26\2\0\1\60\1\26\1\0\2\171\3\0\1\171"+
+    "\1\172\51\171\12\142\1\173\45\142\17\0\1\101\40\0"+
+    "\2\102\1\122\7\102\1\162\4\102\1\174\40\102\20\0"+
+    "\3\26\5\0\4\26\1\175\16\26\2\0\1\60\1\26"+
+    "\21\0\3\26\5\0\12\26\1\176\10\26\2\0\1\60"+
+    "\1\26\21\0\3\26\5\0\6\26\1\177\14\26\2\0"+
+    "\1\60\1\26\21\0\3\26\5\0\13\26\1\200\7\26"+
+    "\2\0\1\60\1\26\1\0\2\201\3\0\1\201\1\202"+
+    "\51\201\12\142\1\173\4\142\1\203\40\142\2\102\1\122"+
+    "\7\102\1\123\4\102\1\204\40\102\16\0\1\205\1\0"+
+    "\3\26\5\0\23\26\2\0\1\60\1\26\21\0\3\26"+
+    "\5\0\1\206\22\26\2\0\1\60\1\26\21\0\3\26"+
+    "\5\0\17\26\1\207\3\26\2\0\1\60\1\26\17\0"+
+    "\1\210\1\0\3\26\5\0\23\26\2\0\1\60\1\26"+
+    "\1\0\2\211\3\0\1\211\1\212\51\211\12\142\1\143"+
+    "\4\142\1\122\40\142\50\0\1\213\27\0\3\26\5\0"+
+    "\17\26\1\214\3\26\2\0\1\60\1\26\21\0\3\26"+
+    "\5\0\1\215\22\26\2\0\1\60\1\26\51\0\1\216"+
+    "\7\0\2\217\3\0\1\217\1\220\51\217\34\0\1\221"+
+    "\43\0\3\26\5\0\4\26\1\222\16\26\2\0\1\60"+
+    "\1\26\21\0\3\26\5\0\13\26\1\223\7\26\2\0"+
+    "\1\60\1\26\35\0\1\224\23\0\2\225\3\0\1\225"+
+    "\1\226\51\225\32\0\1\227\43\0\1\230\1\0\3\26"+
+    "\5\0\23\26\2\0\1\60\1\26\17\0\1\231\1\0"+
+    "\3\26\5\0\23\26\2\0\1\60\1\26\33\0\1\232"+
+    "\25\0\2\233\3\0\1\233\1\234\51\233\51\0\1\235"+
+    "\56\0\1\236\57\0\1\237\60\0\1\240\6\0\2\241"+
+    "\3\0\1\241\1\242\51\241\40\0\1\243\53\0\1\244"+
+    "\57\0\1\245\63\0\1\246\17\0\2\247\3\0\1\247"+
+    "\1\250\51\247\45\0\1\251\44\0\1\252\57\0\1\253"+
+    "\72\0\1\254\12\0\2\255\3\0\1\255\1\256\51\255"+
+    "\44\0\1\257\64\0\1\260\57\0\1\261\52\0\1\262"+
+    "\13\0\2\263\3\0\1\263\1\264\51\263\40\0\1\265"+
+    "\57\0\1\266\17\0\2\267\3\0\1\267\1\270\51\267"+
+    "\45\0\1\271\57\0\1\272\12\0\2\273\3\0\1\273"+
+    "\1\274\51\273\44\0\1\275\57\0\1\276\13\0\2\277"+
+    "\3\0\1\277\1\300\51\277\2\301\3\0\1\301\1\302"+
+    "\51\301\2\303\3\0\1\303\1\304\51\303\2\305\3\0"+
+    "\1\305\1\306\51\305\2\307\3\0\1\307\1\310\51\307"+
+    "\2\311\3\0\1\311\1\312\51\311\2\313\3\0\1\313"+
+    "\1\314\51\313\2\315\3\0\1\315\1\316\51\315\2\317"+
+    "\3\0\1\317\1\320\51\317\2\321\3\0\1\321\1\322"+
+    "\51\321\2\323\3\0\1\323\1\324\51\323\2\325\3\0"+
+    "\1\325\1\326\51\325\2\327\3\0\1\327\1\330\51\327"+
+    "\6\0\1\331\51\0";
 
   private static int [] zzUnpacktrans() {
     int [] result = new int[7152];
@@ -355,7 +358,7 @@ public class Lexico implements java_cup.runtime.Scanner {
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
     "\1\0\1\11\4\1\5\11\6\1\1\11\14\1\2\11"+
-    "\1\1\1\11\1\0\1\1\1\11\1\0\1\1\3\0"+
+    "\2\1\1\11\1\0\1\1\1\11\1\0\1\1\3\0"+
     "\4\11\1\0\14\1\1\11\1\0\1\1\1\0\1\11"+
     "\2\0\1\11\13\1\1\0\2\1\1\0\14\1\1\0"+
     "\1\1\4\0\10\1\1\0\1\1\3\0\6\1\1\0"+
@@ -369,7 +372,7 @@ public class Lexico implements java_cup.runtime.Scanner {
     "\1\1\1\0\1\1\1\0\1\1\1\0\1\1\1\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[216];
+    int [] result = new int[217];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -882,49 +885,49 @@ public class Lexico implements java_cup.runtime.Scanner {
           case 43: break;
           case 3:
             { System.out.println("Token NEGACION encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token NEGACION encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token NEGACION encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 44: break;
           case 4:
             { System.out.println("Token ABRIR_PARENTESIS encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token ABRIR_PARENTESIS encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token ABRIR_PARENTESIS encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 45: break;
           case 5:
             { System.out.println("Token CERRAR_PARENTESIS encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token CERRAR_PARENTESIS encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token CERRAR_PARENTESIS encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 46: break;
           case 6:
             { System.out.println("Token MULTIPLICACION encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token MULTIPLICACION encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token MULTIPLICACION encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 47: break;
           case 7:
             { System.out.println("Token SUMA encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token SUMA encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token SUMA encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 48: break;
           case 8:
             { System.out.println("Token SEP_LISTA encontrado, Lexema "+ yytext());
-                              VentanaPrincipal.textoConsola.append("Token SEP_LISTA encontrado, Lexema "+yytext()+"\n");
+                              VentanaPrincipal.je.append("Token SEP_LISTA encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 49: break;
           case 9:
             { System.out.println("Token RESTA encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token RESTA encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token RESTA encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 50: break;
           case 10:
             { System.out.println("Token DIVISION encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token DIVISION encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token DIVISION encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 51: break;
@@ -934,50 +937,50 @@ public class Lexico implements java_cup.runtime.Scanner {
             throw new Error("Caracter inválido: <" + yytext() + "> en la linea " + yyline + " excede el limite de tamaño");
         } else {
             System.out.println("Token CONST_INT encontrado, lexema " + yytext());
-            VentanaPrincipal.textoConsola.append("Token CONST_INT encontrado, Lexema "+yytext()+"\n");
+            VentanaPrincipal.je.append("Token CONST_INT encontrado, Lexema "+yytext()+"\n");
         }
             }
           // fall through
           case 52: break;
           case 12:
             { System.out.println("Token TERMINACION_LINEA encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token TERMINACION_LINEA encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token TERMINACION_LINEA encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 53: break;
           case 13:
             { System.out.println("Token MENOR encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token MENOR encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token MENOR encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 54: break;
           case 14:
             { System.out.println("Token MAYOR encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token MAYOR encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token MAYOR encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 55: break;
           case 15:
             { System.out.println("Token ID encontrado, lexema " + yytext());
-                              VentanaPrincipal.textoConsola.append("Token ID encontrado, Lexema "+yytext()+"\n");
+                              VentanaPrincipal.je.append("Token ID encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 56: break;
           case 16:
             { System.out.println("Token APERTURA encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token APERTURA encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token APERTURA encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 57: break;
           case 17:
             { System.out.println("Token CIERRE encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token CIERRE encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token CIERRE encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 58: break;
           case 18:
             { System.out.println("Token DISTINTO encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token DISTINTO encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token DISTINTO encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 59: break;
@@ -987,14 +990,14 @@ public class Lexico implements java_cup.runtime.Scanner {
             throw new Error("Caracter inválido: <" + yytext() + "> en la linea " + yyline + " excede el limite de caracteres");
         } else {
             System.out.println("Token CONST_STR encontrado, lexema " + yytext());
-            VentanaPrincipal.textoConsola.append("Token CONST_STR encontrado, Lexema "+yytext()+"\n");
+            VentanaPrincipal.je.append("Token CONST_STR encontrado, Lexema "+yytext()+"\n");
         }
             }
           // fall through
           case 60: break;
           case 20:
             { System.out.println("Token AND encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token AND encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token AND encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 61: break;
@@ -1005,128 +1008,128 @@ public class Lexico implements java_cup.runtime.Scanner {
         } else {
 
             System.out.println("Token CONST_FLOAT encontrado, lexema " + yytext());
-            VentanaPrincipal.textoConsola.append("Token CONST_FLOAT encontrado, Lexema "+yytext()+"\n");
+            VentanaPrincipal.je.append("Token CONST_FLOAT encontrado, Lexema "+yytext()+"\n");
         }
             }
           // fall through
           case 62: break;
           case 22:
             { System.out.println("Token DECLARA encontrado, Lexema "+ yytext());
-       VentanaPrincipal.textoConsola.append("Token DECLARA encontrado, Lexema "+yytext()+"\n");
+       VentanaPrincipal.je.append("Token DECLARA encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 63: break;
           case 23:
             { System.out.println("Token MENOR_IGUAL encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token MENOR_IGUAL encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token MENOR_IGUAL encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 64: break;
           case 24:
             { System.out.println("Token COMPARAR_IGUAL encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token COMPARAR_IGUAL encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token COMPARAR_IGUAL encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 65: break;
           case 25:
             { System.out.println("Token MAYOR_IGUAL encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token MAYOR_IGUAL encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token MAYOR_IGUAL encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 66: break;
           case 26:
             { System.out.println("Token IF encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token IF encontrado, Lexema "+yytext()+ "\n");
+      VentanaPrincipal.je.append("Token IF encontrado, Lexema "+yytext()+ "\n");
             }
           // fall through
           case 67: break;
           case 27:
             { System.out.println("Token OR encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token OR encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token OR encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 68: break;
           case 28:
             { System.out.println("Token ASIGN encontrado, Lexema "+ yytext());
-       VentanaPrincipal.textoConsola.append("Token ASIGN encontrado, Lexema "+yytext()+"\n");
+       VentanaPrincipal.je.append("Token ASIGN encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 69: break;
           case 29:
             { System.out.println("Token TIPO_INT encontrado, Lexema "+ yytext());
-                              VentanaPrincipal.textoConsola.append("Token TIPO_INT encontrado, Lexema "+yytext()+"\n");
+                              VentanaPrincipal.je.append("Token TIPO_INT encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 70: break;
           case 30:
             { System.out.println("Token CONST_BIN encontrado, lexema " + yytext());
-                              VentanaPrincipal.textoConsola.append("Token CONST_BIN encontrado, Lexema "+yytext()+"\n");
+                              VentanaPrincipal.je.append("Token CONST_BIN encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 71: break;
           case 31:
             { System.out.println("Token ELSE encontrado, Lexema "+ yytext());
-       VentanaPrincipal.textoConsola.append("Token ELSE encontrado, Lexema "+yytext()+"\n");
+       VentanaPrincipal.je.append("Token ELSE encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 72: break;
           case 32:
             { System.out.println("Token TAKE encontrado, Lexema "+ yytext());
-                              VentanaPrincipal.textoConsola.append("Token TAKE encontrado, Lexema "+yytext()+"\n");
+                              VentanaPrincipal.je.append("Token TAKE encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 73: break;
           case 33:
             { System.out.println("Token THEN encontrado, Lexema "+ yytext());
-       VentanaPrincipal.textoConsola.append("Token THEN encontrado, Lexema "+yytext()+"\n");
+       VentanaPrincipal.je.append("Token THEN encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 74: break;
           case 34:
             { System.out.println("Token TIPO_FLOAT encontrado, Lexema "+ yytext());
-                              VentanaPrincipal.textoConsola.append("Token TIPO_FLOAT encontrado, Lexema "+yytext()+"\n");
+                              VentanaPrincipal.je.append("Token TIPO_FLOAT encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 75: break;
           case 35:
             { System.out.println("Token WHILE encontrado, Lexema "+ yytext());
-                              VentanaPrincipal.textoConsola.append("Token WHILE encontrado, Lexema "+yytext());
+                              VentanaPrincipal.je.append("Token WHILE encontrado, Lexema "+yytext());
             }
           // fall through
           case 76: break;
           case 36:
             { System.out.println("Token WRITE encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token WRITE encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token WRITE encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 77: break;
           case 37:
             { System.out.println("Token TIPO_STRING encontrado, Lexema "+ yytext());
-                              VentanaPrincipal.textoConsola.append("Token TIPO_STRING encontrado, Lexema "+yytext()+"\n");
+                              VentanaPrincipal.je.append("Token TIPO_STRING encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 78: break;
           case 38:
             { System.out.println("Token DECLARE_SECTION encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token DECLARE_SECTION encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token DECLARE_SECTION encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 79: break;
           case 39:
             { System.out.println("Token PROGRAM.SECTION encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token PROGRAM.SECTION encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token PROGRAM.SECTION encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 80: break;
           case 40:
             { System.out.println("Token ENDDECLARE_SECTION encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token ENDDECLARE_SECTION encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token ENDDECLARE_SECTION encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 81: break;
           case 41:
             { System.out.println("Token ENDPROGRAM.SECTION  encontrado, Lexema "+ yytext());
-      VentanaPrincipal.textoConsola.append("Token ENDPROGRAM.SECTION encontrado, Lexema "+yytext()+"\n");
+      VentanaPrincipal.je.append("Token ENDPROGRAM.SECTION encontrado, Lexema "+yytext()+"\n");
             }
           // fall through
           case 82: break;
