@@ -10,10 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6ca2390d-edcd-4b46-b4ed-1a66f67a9a45" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lexico.flex" beforeDir="false" afterPath="$PROJECT_DIR$/Lexico.flex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/analizadorLexico_jar/analizadorLexico.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/analizadorLexico_jar/analizadorLexico.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/analizadorLexico/Lexico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/analizadorLexico/Lexico.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vista/VentanaPrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vista/VentanaPrincipal.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,8 +52,8 @@
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Romina/Documents/UNLu/2024/teoría de la computación I/analizadorLexico",
     "project.structure.last.edited": "Artifacts",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
