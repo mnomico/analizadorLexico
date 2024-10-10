@@ -6,4 +6,4 @@
 - Luego, vaya a Archivo -> Analizar (Ctrl+L). Si el texto o sus cambios más recientes no fueron guardados en un archivo, el programa le pedirá que los guarde para poder analizarlo.
 
 Puede utilizar un archivo de prueba, el cual se encuentra en el repositorio como **prueba.txt**. Para acceder a él clone el repositorio o haga 
-<a href="https://raw.githubusercontent.com/mnomico/analizadorLexico/refs/heads/master/prueba.txt" download>click aquí</a> para descargarlo.
+<a href="https://raw.githubusercontent.com/mnomico/analizadorLexico/refs/heads/master/prueba.txt" download>click aquí</a> para descargarlo. (Click derecho -> Guardar página como...)
