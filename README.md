@@ -1,4 +1,4 @@
-# Analizador léxico
+# Analizador léxico | Grupo 5
 ### Para descargar el ejecutable, [acceder aquí](https://github.com/mnomico/analizadorLexico/releases/tag/release) y hacer click en **analizadorLexico.jar**
 
 ## Modo de uso

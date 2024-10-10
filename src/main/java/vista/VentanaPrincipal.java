@@ -12,15 +12,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
 
 public class VentanaPrincipal extends javax.swing.JFrame {
 
-    public static StringBuilder je = new StringBuilder();
-    public static boolean error = false;
+    public static StringBuilder textoConsola = new StringBuilder();
     /**
      * Creates new form TextFrame
      */
@@ -31,7 +28,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public VentanaPrincipal() {
         initComponents();
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        setTitle("Nuevo archivo - Analizador Léxico");
+        setTitle(tituloVentana);
         setVisible(true);
         
         addWindowListener(new WindowAdapter(){
@@ -243,11 +240,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             Lexico lexer = new Lexico(lectorArchivo);
             //TODO hacer que Lexer retorne valores y a partir de ahi hacer cosas
             lexer.next_token();
-            if (error){
-                consola.setText(je.toString());
-            }else {
-                consola.setText(je.toString());
-                je=new StringBuilder();}
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -303,10 +295,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         } else abrirArchivo();
 
     }//GEN-LAST:event_bArchivoAbrirActionPerformed
-
-    public void actualizar(String s){
-        consola.append(s);
-    }
 
     private void bArchivoNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bArchivoNuevoActionPerformed
         if (modificado){
