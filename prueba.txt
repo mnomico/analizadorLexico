@@ -7,14 +7,12 @@ PROGRAM.SECTION
 //* Ejemplo de ciclo WHILE *//
 WHILE (a < 10)
   a ::= a + 1;
-ENDWHILE
 
 //* Ejemplo de IF-THEN-ELSE *//
 IF (b >= 5.0) THEN
   c ::= "Mayor o igual que 5";
 ELSE
   c ::= "Menor que 5";
-ENDIF
 
 //* Asignaciones simples *//
 a ::= 99999.99;
@@ -32,7 +30,6 @@ WRITE var;
 //* Este es un comentario anidado
 IF (a <= 30)
   b ::= "correcto"  asignacion string dentro del comentario
-ENDIF
 *//
 
 // y este un comentario de linea
