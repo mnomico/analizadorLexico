@@ -979,8 +979,23 @@ void guardarTablaSimbolos() {
           // fall through
           case 55: break;
           case 15:
-            { String[] simbolo = {yytext(), "ID", "_", "_", "_"};
-    tabla_de_simbolos.add(simbolo);
+            { String id = yytext();
+    boolean existe = false;
+
+    for (String[] simbolo : tabla_de_simbolos) {
+        if (simbolo[0].equals(id)) {
+            existe = true;
+            break;
+        }
+    }
+
+    if (!existe) {
+        String[] simbolo = {id, "ID", "_", "_", "_"};
+        tabla_de_simbolos.add(simbolo);
+    }
+                
+    //String[] simbolo = {yytext(), "ID", "_", "_", "_"};
+    //tabla_de_simbolos.add(simbolo);
     VentanaPrincipal.je.append("Token ID encontrado, Lexema "+yytext()+"\n");
     guardarTablaSimbolos();
             }
