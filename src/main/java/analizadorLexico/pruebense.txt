@@ -1,0 +1,10 @@
+DECLARE.SECTION
+[a,c] := [INT,FLOAT]
+[d] := [STRING]
+ENDDECLARE.SECTION
+
+PROGRAM.SECTION
+b ::= 99;
+c ::= 10.5;
+d ::= "que onda";
+ENDPROGRAM.SECTION

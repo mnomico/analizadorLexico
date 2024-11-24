@@ -1,0 +1,123 @@
+package analizadorLexico;
+import java_cup.runtime.*;
+import java.util.*;
+import java.lang.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import jflex.core.sym;
+import vista.VentanaPrincipal;
+
+
+parser code
+{:
+    public void syntax_error(Symbol s){
+        System.out.println("Error en la linea " + (s.right+1) + " columna " + s.left + ". " + s + " no reconocido. valor " + s.value);
+    }
+:}
+
+
+action code
+{:
+:}
+
+terminal WHILE, IF, THEN, ELSE, ASIGN, DECLARA, OP_SUMA, OP_POR, OP_RESTA, OP_DIVISION, COR_APERTURA, COR_CIERRE, WRITE, MAYOR,
+         MENOR, MAYOR_IGUAL, MENOR_IGUAL, IGUAL, NEGACION, DISTINTO, AND, PAR_APERTURA, PAR_CIERRE, OR, DECLARE_SECTION,
+         ENDDECLARE_SECTION, PROGRAM_SECTION, ENDPROGRAM_SECTION, END_LINE, SEP_LIST, TIPO_INT, TIPO_FLOAT, TIPO_STRING,
+         TAKE, ID, CONST_BIN, CONST_INT, CONST_STR, CONST_FLOAT;
+
+
+non terminal inicio, solo_write, sector_declarativo, declaraciones, declaracion, recursion, tipo, programa, bloque_programa, sentencia,
+             asignacion, expresion, operador, lista_constantes, termino, factor, take_cuerpo, escritura, cuerpo_escritura, seleccion,
+             condicion, comparacion, comparador, iteracion;
+
+precedence left ELSE;
+
+start with inicio;
+
+
+inicio ::= sector_declarativo:sd programa:p {: System.out.println("[regla 0] inicio sector_declarativo programa  ----> " + sd + p); :}
+         | solo_write:w {: System.out.println("[regla 1] inicio solo_write  ----> " + w); :};
+
+solo_write ::= WRITE:w CONST_STR:st END_LINE:el {: System.out.println("[regla 2] WRITE CONST_ST ;"); RESULT = w.toString() + st.toString() + el.toString(); :}
+             | solo_write:sw WRITE:w CONST_STR:st END_LINE:el  {: System.out.println("[regla 3] WRITE CONST_ST ; solo_write"); RESULT = sw.toString() + w.toString() + st.toString() + el.toString(); :};
+
+sector_declarativo ::= DECLARE_SECTION:ds ENDDECLARE_SECTION:es {: System.out.println("[regla 4] D_S ED_S  ----> " + ds + es); RESULT = ds.toString() + es.toString(); :}
+                     | DECLARE_SECTION:ds declaraciones:d ENDDECLARE_SECTION:es {: System.out.println("[regla 5] D_S declaraciones ED_S  ----> " + ds + d + es); RESULT = ds.toString() + d.toString() + es.toString(); :};
+
+declaraciones ::= declaracion:d {: System.out.println("[regla 6] declaracion"); RESULT = d; :}
+                | declaraciones:ds declaracion:d {: System.out.println("[regla 7] declaraciones  declaracion"); RESULT = ds.toString() + d.toString(); :};
+
+declaracion ::= COR_APERTURA:ca recursion:r COR_CIERRE:cc  {: System.out.println("[regla 8] [ recursion ]  ----> " + ca + r + cc); RESULT = ca.toString() + r.toString() + cc.toString(); :};
+
+recursion ::= ID:id SEP_LIST:sl recursion:r SEP_LIST:sl2 tipo:t {: System.out.println("[regla 9] ID, recursion ,tipo"); RESULT = id.toString() + sl.toString() + r.toString() + sl2.toString() + t.toString(); :}
+            | ID:id COR_CIERRE:cc DECLARA:d COR_APERTURA:ca tipo:t {: System.out.println("[regla 10] ID] := [tipo"); RESULT = id.toString() + cc.toString() + d.toString() + ca.toString() + t.toString(); :};
+
+tipo ::= TIPO_INT:ti {: System.out.println("[regla 11] TIPO_INT"); RESULT = ti;:}
+       | TIPO_FLOAT:tf {: System.out.println("[regla 12] TIPO_FLOAT"); RESULT = tf;:}
+       | TIPO_STRING:ts {: System.out.println("[regla 13] TIPO_STRING"); RESULT = ts;:};
+
+programa ::= PROGRAM_SECTION:ps bloque_programa:bp ENDPROGRAM_SECTION:eps {: System.out.println("[regla 14] PS bloque_programa EPS  ----> " + ps + bp + eps); RESULT = ps.toString() + bp.toString() + eps.toString(); :};
+
+bloque_programa ::= sentencia:s {: System.out.println("[regla 15] lista_sentencias  ----> " + s); RESULT = s; :}
+                  | bloque_programa:bp sentencia:s {: System.out.println("[regla 16] lista_sentencias sentencia  ----> " + bp + s); RESULT = bp.toString() + s.toString(); :};
+
+sentencia ::= asignacion:a {: System.out.println("[regla 17] asignacion  ----> " + a); RESULT = a; :}
+            | iteracion:i {: System.out.println("[regla 18] iteracion  ----> " + i); RESULT = i; :}
+            | seleccion:s {: System.out.println("[regla 19] seleccion  ----> " + s); RESULT = s; :}
+            | escritura:e {: System.out.println("[regla 20] escritura  ----> " + e); RESULT = e; :};
+
+asignacion ::= ID:id ASIGN:a expresion:e END_LINE:el {: System.out.println("[regla 21] ID ::= expresion  ----> " + id + a + e + el); RESULT = id.toString() + a.toString() + e.toString() + el.toString(); :};
+
+expresion ::= expresion:e OP_SUMA:os termino:t {: System.out.println("[regla 22] expresion + termino  ----> " + e + os + t); RESULT = e.toString() + os.toString() + t.toString(); :}
+            | expresion:e OP_RESTA:or termino:t {: System.out.println("[regla 23] expresion - termino  ----> " + e + or + t); RESULT = e.toString() + or.toString() + t.toString(); :}
+            | termino:t {: System.out.println("[regla 24] termino  ----> " + t); RESULT = t; :};
+
+termino ::= termino:t OP_POR:op factor:f {: System.out.println("[regla 25] termino * factor  ----> " + t + op + f); RESULT = t.toString() + op.toString() + f.toString();:}
+          | termino:t OP_DIVISION:od factor:f {: System.out.println("[regla 26] termino / factor  ----> " + t + od + f); RESULT = t.toString() + od.toString() + f.toString();:}
+          | factor:f  {: System.out.println("[regla 27] factor  ----> " + f); RESULT = f;:};
+
+factor ::= PAR_APERTURA:pa expresion:ex PAR_CIERRE:pc {: System.out.println("[regla 28] ( expresion )  ----> " + pa + ex + pc); RESULT = pa.toString() + ex.toString() + pc.toString();:}
+         | ID:id {: System.out.println("[regla 29] ID  ----> " + id); RESULT = id;:}
+         | CONST_INT:ci {: System.out.println("[regla 30] CONST_INT  ----> " + ci); RESULT = ci;:}
+         | CONST_FLOAT:cf {: System.out.println("[regla 31] CONST_FLOAT  ----> " + cf); RESULT = cf;:}
+         | CONST_BIN:cb {: System.out.println("[regla 32] CONST_BIN  ----> " + cb); RESULT = cb;:}
+         | CONST_STR:CS {: System.out.println("[regla 33] CONST_STR  ----> " + CS); RESULT = CS;:}
+         | take_cuerpo:tc {: System.out.println("[regla 33.5] take_cuerpo  ----> " + tc); RESULT = tc;:};
+
+take_cuerpo ::= TAKE:t PAR_APERTURA:pa operador:op END_LINE:el ID:id END_LINE:el2 COR_APERTURA:ca lista_constantes:lc COR_CIERRE:cc PAR_CIERRE:pc END_LINE:el3 {: System.out.println("[regla 34] TAKE (operador;ID;[lista_constantes]);  ----> " + t + pa +op + el + id + el2 + ca + lc + cc + pc + el3 ); RESULT = t.toString() + pa.toString() + op.toString() + el.toString() + id.toString() + el2.toString() + ca.toString() + lc.toString() + cc.toString() + pc.toString() + el3.toString(); :}
+              | TAKE:t PAR_APERTURA:pa operador:op END_LINE:el ID:id END_LINE:el2 COR_APERTURA:ca  COR_CIERRE:cc PAR_CIERRE:pc END_LINE:el3 {: System.out.println("[regla 35] TAKE (operador;ID;[]);  ----> " + t + pa +op + el + id + el2 + ca + cc + pc + el3 ); RESULT = t.toString() + pa.toString() + op.toString() + el.toString() + id.toString() + el2.toString() + ca.toString() + cc.toString() + pc.toString() + el3.toString(); :};
+
+operador ::= OP_SUMA:op {: System.out.println("[regla 36] + "); RESULT = op; :}
+           | OP_POR:op {: System.out.println("[regla 37] * "); RESULT = op; :};
+
+lista_constantes ::= lista_constantes:lc SEP_LIST:sp expresion:e {: System.out.println("[regla 38] lista_constantes,expresion  ----> " + lc + sp + e); RESULT = lc.toString() + sp.toString() + e.toString(); :}
+                   | expresion:ex {: System.out.println("[regla 39] expresion  ----> " + ex); RESULT = ex; :};
+
+iteracion ::= WHILE:w PAR_APERTURA:pa condicion:c PAR_CIERRE:pc bloque_programa:bp {: System.out.println("[regla 40] WHILE (condicion) bloque_programa  ----> " + w + pa + c + pc + bp); RESULT = w.toString() + pa.toString() + c.toString() + pc.toString() + bp.toString(); :};
+
+condicion ::= NEGACION:n PAR_APERTURA:pa condicion:c PAR_CIERRE:pc {: System.out.println("[regla 41] !(condicion)  ----> " + n + pa + c + pc); RESULT = n.toString() + pa.toString() + c.toString() + pc.toString(); :}
+            | comparacion:cp {: System.out.println("[regla 42] comparacion  ----> " + cp); RESULT = cp; :}
+            | comparacion:cp1 AND:a comparacion:cp2 {: System.out.println("[regla 43] comparacion && comparacion  ----> " + cp1 + " " + a + " " + cp2); RESULT = cp1.toString() + a.toString() + cp2.toString(); :}
+            | comparacion:cp1 OR:o comparacion:cp2 {: System.out.println("[regla 44] comparacion || comparacion  ----> " + cp1 + " " + o + " " + cp2); RESULT = cp1.toString() + o.toString() + cp2.toString();:};
+
+comparacion ::= expresion:ex1 comparador:com expresion:ex2 {: System.out.println("[regla 45] expresion comparador expresion  ----> " + ex1 + " " + com + " " + ex2); RESULT = ex1.toString() + com.toString() + ex2.toString(); :};
+
+comparador ::= MAYOR:ma {: System.out.println("[regla 46] >"); RESULT = ma; :}
+             | MENOR:me {: System.out.println("[regla 47] <"); RESULT = me; :}
+             | IGUAL:ig {: System.out.println("[regla 48] =="); RESULT = ig; :}
+             | MAYOR_IGUAL:mai {: System.out.println("[regla 49] >="); RESULT = mai; :}
+             | MENOR_IGUAL:mei {: System.out.println("[regla 50] <="); RESULT = mei; :}
+             | DISTINTO:dis {: System.out.println("[regla 51] != "); RESULT = dis; :};
+
+seleccion ::= IF:i PAR_APERTURA:pa condicion:c PAR_CIERRE:pc THEN:th bloque_programa:bp1 ELSE:els bloque_programa:bp2 {: System.out.println("[regla 52] IF (condicion) THEN bloque_programa ELSE bloque_programa  ----> " + i + pa + c + pc + th + bp1 + els + bp2); RESULT = i.toString() + pa.toString() + c.toString() + pc.toString() + th.toString() + bp1.toString() + els.toString() + bp2.toString(); :}
+            | IF:i PAR_APERTURA:pa condicion:c PAR_CIERRE:pc THEN:th bloque_programa:bp1 {: System.out.println("[regla 53] IF (condicion) THEN bloque_programa  ----> " + i + pa + c + pc + th + bp1); RESULT = i.toString() + pa.toString() + c.toString() + pc.toString() + th.toString() + bp1.toString(); :};
+
+escritura ::= WRITE:wr cuerpo_escritura:ce END_LINE:el {: System.out.println("[regla 54] WRITE cuerpo_escritura;  ----> WRITE "+ ce + ";"); RESULT = wr.toString() + ce.toString() + el.toString(); :}
+            | escritura:e WRITE:wr cuerpo_escritura:ce END_LINE:el  {: System.out.println("[regla 55] escritura WRITE cuerpo_escritura;  ----> "+ e + " WRITE " + ce + ";"); RESULT = e.toString() + wr.toString() + ce.toString() + el.toString(); :};
+
+cuerpo_escritura ::= CONST_STR:cs {: System.out.println("[regla 58] CONST_STR  ----> " + cs); RESULT = cs;:}
+                   | CONST_INT:ci {: System.out.println("[regla 59] CONST_INT  ----> " + ci); RESULT = ci; :}
+                   | CONST_FLOAT:cf {: System.out.println("[regla 60] CONST_FLOAT  ----> " + cf); RESULT = cf; :}
+                   | CONST_BIN:cb {: System.out.println("[regla 61] CONST_BIN  ----> " + cb); RESULT = cb; :}
+                   | ID:id {: System.out.println("[regla 62] ID  ----> " + id); RESULT = id; :};

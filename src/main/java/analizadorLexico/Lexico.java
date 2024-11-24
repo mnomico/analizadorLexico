@@ -9,7 +9,6 @@ import java.lang.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import jflex.core.sym;
 import vista.VentanaPrincipal;
 
 
@@ -911,42 +910,42 @@ void guardarTablaSimbolos() {
           // fall through
           case 43: break;
           case 3:
-            { VentanaPrincipal.je.append("Token NEGACION encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.NEGACION,yytext());
             }
           // fall through
           case 44: break;
           case 4:
-            { VentanaPrincipal.je.append("Token ABRIR_PARENTESIS encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.PAR_APERTURA,yytext());
             }
           // fall through
           case 45: break;
           case 5:
-            { VentanaPrincipal.je.append("Token CERRAR_PARENTESIS encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.PAR_CIERRE,yytext());
             }
           // fall through
           case 46: break;
           case 6:
-            { VentanaPrincipal.je.append("Token MULTIPLICACION encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.OP_POR,yytext());
             }
           // fall through
           case 47: break;
           case 7:
-            { VentanaPrincipal.je.append("Token SUMA encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.OP_SUMA,yytext());
             }
           // fall through
           case 48: break;
           case 8:
-            { VentanaPrincipal.je.append("Token SEP_LISTA encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.SEP_LIST,yytext());
             }
           // fall through
           case 49: break;
           case 9:
-            { VentanaPrincipal.je.append("Token RESTA encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.OP_RESTA,yytext());
             }
           // fall through
           case 50: break;
           case 10:
-            { VentanaPrincipal.je.append("Token DIVISION encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.OP_DIVISION,yytext());
             }
           // fall through
           case 51: break;
@@ -957,24 +956,24 @@ void guardarTablaSimbolos() {
     } else {
         String[] simbolo = {"_" + yytext(), "CONST_INT", "_", yytext(), "_"};
         tabla_de_simbolos.add(simbolo);
-        VentanaPrincipal.je.append("Token CONST_INT encontrado, Lexema "+yytext()+"\n");
         guardarTablaSimbolos();
+        return new Symbol(sym.CONST_INT,yytext());
     }
             }
           // fall through
           case 52: break;
           case 12:
-            { VentanaPrincipal.je.append("Token TERMINACION_LINEA encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.END_LINE,yytext());
             }
           // fall through
           case 53: break;
           case 13:
-            { VentanaPrincipal.je.append("Token MENOR encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.MENOR,yytext());
             }
           // fall through
           case 54: break;
           case 14:
-            { VentanaPrincipal.je.append("Token MAYOR encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.MAYOR,yytext());
             }
           // fall through
           case 55: break;
@@ -993,26 +992,26 @@ void guardarTablaSimbolos() {
         String[] simbolo = {id, "ID", "_", "_", "_"};
         tabla_de_simbolos.add(simbolo);
     }
-                
+
     //String[] simbolo = {yytext(), "ID", "_", "_", "_"};
     //tabla_de_simbolos.add(simbolo);
-    VentanaPrincipal.je.append("Token ID encontrado, Lexema "+yytext()+"\n");
     guardarTablaSimbolos();
+    return new Symbol(sym.ID,yytext());
             }
           // fall through
           case 56: break;
           case 16:
-            { VentanaPrincipal.je.append("Token APERTURA encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.COR_APERTURA,yytext());
             }
           // fall through
           case 57: break;
           case 17:
-            { VentanaPrincipal.je.append("Token CIERRE encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.COR_CIERRE,yytext());
             }
           // fall through
           case 58: break;
           case 18:
-            { VentanaPrincipal.je.append("Token DISTINTO encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.DISTINTO,yytext());
             }
           // fall through
           case 59: break;
@@ -1023,14 +1022,14 @@ void guardarTablaSimbolos() {
     } else {
         String[] simbolo = {"_" + yytext(), "CONST_STR", "_", yytext(), String.valueOf(value.length())};
         tabla_de_simbolos.add(simbolo);
-        VentanaPrincipal.je.append("Token CONST_STR encontrado, Lexema "+yytext()+"\n");
         guardarTablaSimbolos();
+        return new Symbol(sym.CONST_STR,yytext());
     }
             }
           // fall through
           case 60: break;
           case 20:
-            { VentanaPrincipal.je.append("Token AND encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.AND,yytext());
             }
           // fall through
           case 61: break;
@@ -1041,109 +1040,109 @@ void guardarTablaSimbolos() {
     } else {
         String[] simbolo = {"_" + yytext(), "CONST_FLOAT", "_", yytext(), "_"};
         tabla_de_simbolos.add(simbolo);
-        VentanaPrincipal.je.append("Token CONST_FLOAT encontrado, Lexema "+yytext()+"\n");
         guardarTablaSimbolos();
+        return new Symbol(sym.CONST_FLOAT,yytext());
     }
             }
           // fall through
           case 62: break;
           case 22:
-            { VentanaPrincipal.je.append("Token DECLARA encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.DECLARA,yytext());
             }
           // fall through
           case 63: break;
           case 23:
-            { VentanaPrincipal.je.append("Token MENOR_IGUAL encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.MENOR_IGUAL,yytext());
             }
           // fall through
           case 64: break;
           case 24:
-            { VentanaPrincipal.je.append("Token COMPARAR_IGUAL encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.IGUAL,yytext());
             }
           // fall through
           case 65: break;
           case 25:
-            { VentanaPrincipal.je.append("Token MAYOR_IGUAL encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.MAYOR_IGUAL,yytext());
             }
           // fall through
           case 66: break;
           case 26:
-            { VentanaPrincipal.je.append("Token IF encontrado, Lexema "+yytext()+ "\n");
+            { return new Symbol(sym.IF,yytext());
             }
           // fall through
           case 67: break;
           case 27:
-            { VentanaPrincipal.je.append("Token OR encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.OR,yytext());
             }
           // fall through
           case 68: break;
           case 28:
-            { VentanaPrincipal.je.append("Token ASIGN encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.ASIGN,yytext());
             }
           // fall through
           case 69: break;
           case 29:
-            { VentanaPrincipal.je.append("Token TIPO_INT encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.TIPO_INT,yytext());
             }
           // fall through
           case 70: break;
           case 30:
-            { VentanaPrincipal.je.append("Token CONST_BIN encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.CONST_BIN,yytext());
             }
           // fall through
           case 71: break;
           case 31:
-            { VentanaPrincipal.je.append("Token ELSE encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.ELSE,yytext());
             }
           // fall through
           case 72: break;
           case 32:
-            { VentanaPrincipal.je.append("Token TAKE encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.TAKE,yytext());
             }
           // fall through
           case 73: break;
           case 33:
-            { VentanaPrincipal.je.append("Token THEN encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.THEN,yytext());
             }
           // fall through
           case 74: break;
           case 34:
-            { VentanaPrincipal.je.append("Token TIPO_FLOAT encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.TIPO_FLOAT,yytext());
             }
           // fall through
           case 75: break;
           case 35:
-            { VentanaPrincipal.je.append("Token WHILE encontrado, Lexema "+yytext());
+            { return new Symbol(sym.WHILE,yytext());
             }
           // fall through
           case 76: break;
           case 36:
-            { VentanaPrincipal.je.append("Token WRITE encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.WRITE,yytext());
             }
           // fall through
           case 77: break;
           case 37:
-            { VentanaPrincipal.je.append("Token TIPO_STRING encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.TIPO_STRING,yytext());
             }
           // fall through
           case 78: break;
           case 38:
-            { VentanaPrincipal.je.append("Token DECLARE_SECTION encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.DECLARE_SECTION,yytext());
             }
           // fall through
           case 79: break;
           case 39:
-            { VentanaPrincipal.je.append("Token PROGRAM.SECTION encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.PROGRAM_SECTION,yytext());
             }
           // fall through
           case 80: break;
           case 40:
-            { VentanaPrincipal.je.append("Token ENDDECLARE_SECTION encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.ENDDECLARE_SECTION,yytext());
             }
           // fall through
           case 81: break;
           case 41:
-            { VentanaPrincipal.je.append("Token ENDPROGRAM.SECTION encontrado, Lexema "+yytext()+"\n");
+            { return new Symbol(sym.ENDPROGRAM_SECTION,yytext());
             }
           // fall through
           case 82: break;
