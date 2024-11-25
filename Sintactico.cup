@@ -18,26 +18,41 @@ parser code
 
 action code
 {:
-List<String[]> tabla_de_simbolos = new ArrayList<>();
+    List<String[]> tabla_de_simbolos = new ArrayList<>();
 
-void guardarTablaSimbolos() {
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter("tabla_de_simbolos.txt"))) {
-        // Columnas
-        writer.write(String.format("%-50s %-15s %-20s %-50s %-5s", "Nombre", "Token", "Tipo", "Valor", "Long"));
-        writer.newLine();
-        writer.write("--------------------------------------------------------------------------------------------------------------------------------------------------------");
-        writer.newLine();
-
-        // Filas
-        for (String[] simbolo : tabla_de_simbolos) {
-            writer.write(String.format("%-50s %-15s %-20s %-50s %-5s", simbolo[0], simbolo[1], simbolo[2], simbolo[3], simbolo[4]));
+    void guardarTablaSimbolos() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("tabla_de_simbolos.txt"))) {
+            // Columnas
+            writer.write(String.format("%-50s %-15s %-20s %-50s %-5s", "Nombre", "Token", "Tipo", "Valor", "Long"));
             writer.newLine();
-        }
+            writer.write("--------------------------------------------------------------------------------------------------------------------------------------------------------");
+            writer.newLine();
 
-    } catch (IOException e) {
-        System.err.println("Error al escribir la tabla de símbolos en el archivo: " + e.getMessage());
+            // Filas
+            for (String[] simbolo : tabla_de_simbolos) {
+                writer.write(String.format("%-50s %-15s %-20s %-50s %-5s", simbolo[0], simbolo[1], simbolo[2], simbolo[3], simbolo[4]));
+                writer.newLine();
+            }
+
+        } catch (IOException e) {
+            System.err.println("Error al escribir la tabla de símbolos en el archivo: " + e.getMessage());
+        }
     }
-}
+
+    void guardarTipoId() {
+        boolean existe = false;
+        for (String[] simbolo : tabla_de_simbolos) {
+            if (simbolo[0].equals(id)) {
+                existe = true;
+                break;
+            }
+        }
+        if (!existe) {
+            String[] simbolo = {id.toString(), "ID", t.toString(), "_", "_"};
+            tabla_de_simbolos.add(simbolo);
+        }
+        guardarTablaSimbolos();
+    }
 :}
 
 terminal WHILE, IF, THEN, ELSE, ASIGN, DECLARA, OP_SUMA, OP_POR, OP_RESTA, OP_DIVISION, COR_APERTURA, COR_CIERRE, WRITE, MAYOR,
@@ -69,37 +84,17 @@ declaraciones ::= declaracion:d {: VentanaPrincipal.je.append("\n[regla 6] decla
 
 declaracion ::= COR_APERTURA:ca recursion:r COR_CIERRE:cc  {: VentanaPrincipal.je.append("\n[regla 8] [ recursion ]  ----> " + ca + r + cc); RESULT = ca.toString() + r.toString() + cc.toString(); :};
 
-recursion ::= ID:id SEP_LIST:sl recursion:r SEP_LIST:sl2 tipo:t {: VentanaPrincipal.je.append("\n[regla 9] ID, recursion ,tipo");
+recursion ::= ID:id SEP_LIST:sl recursion:r SEP_LIST:sl2 tipo:t {:
+                                                                    VentanaPrincipal.je.append("\n[regla 9] ID, recursion ,tipo");
                                                                     RESULT = id.toString() + sl.toString() + r.toString() + sl2.toString() + t.toString();
                                                                     boolean existe = false;
-                                                                    for (String[] simbolo : tabla_de_simbolos) {
-                                                                            if (simbolo[0].equals(id)) {
-                                                                                existe = true;
-                                                                                break;
-                                                                            }
-                                                                        }
-                                                                    if (!existe) {
-                                                                            String[] simbolo = {id.toString(), "ID", t.toString(), "_", "_"};
-                                                                            tabla_de_simbolos.add(simbolo);
-                                                                        }
-                                                                    guardarTablaSimbolos();
-                                                                    :}
-            | ID:id COR_CIERRE:cc DECLARA:d COR_APERTURA:ca tipo:t {: VentanaPrincipal.je.append("\n[regla 10] ID] := [tipo");
-                                                                       RESULT = id.toString() + cc.toString() + d.toString() + ca.toString() + t.toString();
-                                                                       boolean existe = false;
-                                                                           for (String[] simbolo : tabla_de_simbolos) {
-                                                                               if (simbolo[0].equals(id)) {
-                                                                                   existe = true;
-                                                                                   break;
-                                                                               }
-                                                                           }
-
-                                                                           if (!existe) {
-                                                                               String[] simbolo = {id.toString() ,"ID", t.toString(), "_", "_"};
-                                                                               tabla_de_simbolos.add(simbolo);
-                                                                           }
-                                                                           guardarTablaSimbolos();
-                                                                           :};
+                                                                    guardarTipoId();
+                                                                :}
+            | ID:id COR_CIERRE:cc DECLARA:d COR_APERTURA:ca tipo:t {:
+                                                                        VentanaPrincipal.je.append("\n[regla 10] ID] := [tipo");
+                                                                        RESULT = id.toString() + cc.toString() + d.toString() + ca.toString() + t.toString();
+                                                                        guardarTipoId();
+                                                                   :};
 
 tipo ::= TIPO_INT:ti {: VentanaPrincipal.je.append("\n[regla 11] TIPO_INT"); RESULT = ti;:}
        | TIPO_FLOAT:tf {: VentanaPrincipal.je.append("\n[regla 12] TIPO_FLOAT"); RESULT = tf;:}
@@ -127,10 +122,31 @@ termino ::= termino:t OP_POR:op factor:f {: VentanaPrincipal.je.append("\n[regla
 
 factor ::= PAR_APERTURA:pa expresion:ex PAR_CIERRE:pc {: VentanaPrincipal.je.append("\n[regla 28] ( expresion )  ----> " + pa + ex + pc); RESULT = pa.toString() + ex.toString() + pc.toString();:}
          | ID:id {: VentanaPrincipal.je.append("\n[regla 29] ID  ----> " + id); RESULT = id;:}
-         | CONST_INT:ci {: VentanaPrincipal.je.append("\n[regla 30] CONST_INT  ----> " + ci); RESULT = ci;:}
-         | CONST_FLOAT:cf {: VentanaPrincipal.je.append("\n[regla 31] CONST_FLOAT  ----> " + cf); RESULT = cf;:}
-         | CONST_BIN:cb {: VentanaPrincipal.je.append("\n[regla 32] CONST_BIN  ----> " + cb); RESULT = cb;:}
-         | CONST_STR:CS {: VentanaPrincipal.je.append("\n[regla 33] CONST_STR  ----> " + CS); RESULT = CS;:}
+         | CONST_INT:ci {:
+                            VentanaPrincipal.je.append("\n[regla 30] CONST_INT  ----> " + ci); RESULT = ci;
+                            String[] simbolo = {"_" + ci.toString(), "CONST_INT", "_", ci.toString(), "_"};
+                            tabla_de_simbolos.add(simbolo);
+                            guardarTablaSimbolos();
+
+                        :}
+         | CONST_FLOAT:cf {:
+                            VentanaPrincipal.je.append("\n[regla 31] CONST_FLOAT  ----> " + cf); RESULT = cf;
+                            String[] simbolo = {"_" + cf.toString(), "CONST_FLOAT", "_", cf.toString(), "_"};
+                            tabla_de_simbolos.add(simbolo);
+                            guardarTablaSimbolos();
+                          :}
+         | CONST_BIN:cb {:
+                            VentanaPrincipal.je.append("\n[regla 32] CONST_BIN  ----> " + cb); RESULT = cb;
+                            String[] simbolo = {"_" + cb.toString(), "CONST_BIN", "_", cb.toString(), "_"};
+                            tabla_de_simbolos.add(simbolo);
+                            guardarTablaSimbolos();
+                        :}
+         | CONST_STR:CS {:
+                            VentanaPrincipal.je.append("\n[regla 33] CONST_STR  ----> " + CS); RESULT = CS;
+                            String[] simbolo = {"_" + CS.toString(), "CONST_STR", "_", CS.toString(), "_"};
+                            tabla_de_simbolos.add(simbolo);
+                            guardarTablaSimbolos();
+                        :}
          | take_cuerpo:tc {: VentanaPrincipal.je.append("\n[regla 34] take_cuerpo  ----> " + tc); RESULT = tc;:};
 
 take_cuerpo ::= TAKE:t PAR_APERTURA:pa operador:op END_LINE:el ID:id END_LINE:el2 COR_APERTURA:ca lista_constantes:lc COR_CIERRE:cc PAR_CIERRE:pc  {: VentanaPrincipal.je.append("\n[regla 35] TAKE (operador;ID;[lista_constantes]);  ----> " + t + pa +op + el + id + el2 + ca + lc + cc + pc); RESULT = t.toString() + pa.toString() + op.toString() + el.toString() + id.toString() + el2.toString() + ca.toString() + lc.toString() + cc.toString() + pc.toString(); :}
