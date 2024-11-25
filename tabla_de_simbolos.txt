@@ -1,9 +1,5 @@
 Nombre                                             Token           Tipo                 Valor                                              Long 
 --------------------------------------------------------------------------------------------------------------------------------------------------------
-a                                                  ID              _                    _                                                  _    
-c                                                  ID              _                    _                                                  _    
-d                                                  ID              _                    _                                                  _    
-b                                                  ID              _                    _                                                  _    
-_99                                                CONST_INT       _                    99                                                 _    
-_10.5                                              CONST_FLOAT     _                    10.5                                               _    
-_"que onda"                                        CONST_STR       _                    "que onda"                                         10   
+c                                                  ID              INT                  _                                                  _    
+a                                                  ID              FLOAT                _                                                  _    
+d                                                  ID              STRING               _                                                  _    

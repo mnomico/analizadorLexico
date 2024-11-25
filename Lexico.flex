@@ -28,7 +28,7 @@ COMENTARIO_BLOQUE = "//*"([^*]|"*"+[^/])*"*//"
 COMENTARIO_LINEA = "//" ~[\n]
 
 %{
-
+/*
     List<String[]> tabla_de_simbolos = new ArrayList<>();
 
 void guardarTablaSimbolos() {
@@ -49,7 +49,7 @@ void guardarTablaSimbolos() {
         System.err.println("Error al escribir la tabla de símbolos en el archivo: " + e.getMessage());
     }
 }
-
+/*
 %}
 
 %%
@@ -125,7 +125,7 @@ void guardarTablaSimbolos() {
 "TAKE"                       {return new Symbol(sym.TAKE,yytext());}
 
 {ID} {
-
+    /*
     String id = yytext();
     boolean existe = false;
 
@@ -140,10 +140,9 @@ void guardarTablaSimbolos() {
         String[] simbolo = {id, "ID", "_", "_", "_"};
         tabla_de_simbolos.add(simbolo);
     }
-
-    //String[] simbolo = {yytext(), "ID", "_", "_", "_"};
-    //tabla_de_simbolos.add(simbolo);
     guardarTablaSimbolos();
+    */
+
     return new Symbol(sym.ID,yytext());
 }
 
@@ -160,9 +159,11 @@ void guardarTablaSimbolos() {
     if (valor < -3.4028235E38 || valor > 3.4028235E38) {
         throw new Error("Caracter inválido: <" + yytext() + "> en la linea " + yyline + " excede el limite de tamaño");
     } else {
+        /*
         String[] simbolo = {"_" + yytext(), "CONST_FLOAT", "_", yytext(), "_"};
         tabla_de_simbolos.add(simbolo);
         guardarTablaSimbolos();
+        */
         return new Symbol(sym.CONST_FLOAT,yytext());
     }
 }
@@ -172,9 +173,11 @@ void guardarTablaSimbolos() {
     if (valor < -32768 || valor > 32767) {
         throw new Error("Caracter inválido: <" + yytext() + "> en la linea " + yyline + " excede el limite de tamaño");
     } else {
+        /*
         String[] simbolo = {"_" + yytext(), "CONST_INT", "_", yytext(), "_"};
         tabla_de_simbolos.add(simbolo);
         guardarTablaSimbolos();
+        */
         return new Symbol(sym.CONST_INT,yytext());
     }
 }
@@ -184,9 +187,11 @@ void guardarTablaSimbolos() {
     if (value.length() > 32) {
         throw new Error("Caracter inválido: <" + yytext() + "> en la linea " + yyline + " excede el limite de caracteres");
     } else {
+        /*
         String[] simbolo = {"_" + yytext(), "CONST_STR", "_", yytext(), String.valueOf(value.length())};
         tabla_de_simbolos.add(simbolo);
         guardarTablaSimbolos();
+        */
         return new Symbol(sym.CONST_STR,yytext());
     }
 }

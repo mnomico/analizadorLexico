@@ -12,13 +12,32 @@ import vista.VentanaPrincipal;
 parser code
 {:
     public void syntax_error(Symbol s){
-        System.out.println("Error en la linea " + (s.right+1) + " columna " + s.left + ". " + s + " no reconocido. valor " + s.value);
+        VentanaPrincipal.je.append("Error en la linea " + (s.right+1) + " columna " + s.left + ". " + s + " no reconocido. valor " + s.value);
     }
 :}
 
-
 action code
 {:
+List<String[]> tabla_de_simbolos = new ArrayList<>();
+
+void guardarTablaSimbolos() {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("tabla_de_simbolos.txt"))) {
+        // Columnas
+        writer.write(String.format("%-50s %-15s %-20s %-50s %-5s", "Nombre", "Token", "Tipo", "Valor", "Long"));
+        writer.newLine();
+        writer.write("--------------------------------------------------------------------------------------------------------------------------------------------------------");
+        writer.newLine();
+
+        // Filas
+        for (String[] simbolo : tabla_de_simbolos) {
+            writer.write(String.format("%-50s %-15s %-20s %-50s %-5s", simbolo[0], simbolo[1], simbolo[2], simbolo[3], simbolo[4]));
+            writer.newLine();
+        }
+
+    } catch (IOException e) {
+        System.err.println("Error al escribir la tabla de símbolos en el archivo: " + e.getMessage());
+    }
+}
 :}
 
 terminal WHILE, IF, THEN, ELSE, ASIGN, DECLARA, OP_SUMA, OP_POR, OP_RESTA, OP_DIVISION, COR_APERTURA, COR_CIERRE, WRITE, MAYOR,
@@ -36,88 +55,117 @@ precedence left ELSE;
 start with inicio;
 
 
-inicio ::= sector_declarativo:sd programa:p {: System.out.println("[regla 0] inicio sector_declarativo programa  ----> " + sd + p); :}
-         | solo_write:w {: System.out.println("[regla 1] inicio solo_write  ----> " + w); :};
+inicio ::= sector_declarativo:sd programa:p {: VentanaPrincipal.je.append("\n[regla 0] inicio sector_declarativo programa  ----> " + sd + p); :}
+         | solo_write:w {: VentanaPrincipal.je.append("\n[regla 1] inicio solo_write  ----> " + w); :};
 
-solo_write ::= WRITE:w CONST_STR:st END_LINE:el {: System.out.println("[regla 2] WRITE CONST_ST ;"); RESULT = w.toString() + st.toString() + el.toString(); :}
-             | solo_write:sw WRITE:w CONST_STR:st END_LINE:el  {: System.out.println("[regla 3] WRITE CONST_ST ; solo_write"); RESULT = sw.toString() + w.toString() + st.toString() + el.toString(); :};
+solo_write ::= WRITE:w CONST_STR:st END_LINE:el {: VentanaPrincipal.je.append("\n[regla 2] WRITE CONST_ST ;"); RESULT = w.toString() + st.toString() + el.toString(); :}
+             | solo_write:sw WRITE:w CONST_STR:st END_LINE:el  {: VentanaPrincipal.je.append("\n[regla 3] WRITE CONST_ST ; solo_write"); RESULT = sw.toString() + w.toString() + st.toString() + el.toString(); :};
 
-sector_declarativo ::= DECLARE_SECTION:ds ENDDECLARE_SECTION:es {: System.out.println("[regla 4] D_S ED_S  ----> " + ds + es); RESULT = ds.toString() + es.toString(); :}
-                     | DECLARE_SECTION:ds declaraciones:d ENDDECLARE_SECTION:es {: System.out.println("[regla 5] D_S declaraciones ED_S  ----> " + ds + d + es); RESULT = ds.toString() + d.toString() + es.toString(); :};
+sector_declarativo ::= DECLARE_SECTION:ds ENDDECLARE_SECTION:es {: VentanaPrincipal.je.append("\n[regla 4] D_S ED_S  ----> " + ds + es); RESULT = ds.toString() + es.toString(); :}
+                     | DECLARE_SECTION:ds declaraciones:d ENDDECLARE_SECTION:es {: VentanaPrincipal.je.append("\n[regla 5] D_S declaraciones ED_S  ----> " + ds + d + es); RESULT = ds.toString() + d.toString() + es.toString(); :};
 
-declaraciones ::= declaracion:d {: System.out.println("[regla 6] declaracion"); RESULT = d; :}
-                | declaraciones:ds declaracion:d {: System.out.println("[regla 7] declaraciones  declaracion"); RESULT = ds.toString() + d.toString(); :};
+declaraciones ::= declaracion:d {: VentanaPrincipal.je.append("\n[regla 6] declaracion"); RESULT = d; :}
+                | declaraciones:ds declaracion:d {: VentanaPrincipal.je.append("\n[regla 7] declaraciones  declaracion"); RESULT = ds.toString() + d.toString(); :};
 
-declaracion ::= COR_APERTURA:ca recursion:r COR_CIERRE:cc  {: System.out.println("[regla 8] [ recursion ]  ----> " + ca + r + cc); RESULT = ca.toString() + r.toString() + cc.toString(); :};
+declaracion ::= COR_APERTURA:ca recursion:r COR_CIERRE:cc  {: VentanaPrincipal.je.append("\n[regla 8] [ recursion ]  ----> " + ca + r + cc); RESULT = ca.toString() + r.toString() + cc.toString(); :};
 
-recursion ::= ID:id SEP_LIST:sl recursion:r SEP_LIST:sl2 tipo:t {: System.out.println("[regla 9] ID, recursion ,tipo"); RESULT = id.toString() + sl.toString() + r.toString() + sl2.toString() + t.toString(); :}
-            | ID:id COR_CIERRE:cc DECLARA:d COR_APERTURA:ca tipo:t {: System.out.println("[regla 10] ID] := [tipo"); RESULT = id.toString() + cc.toString() + d.toString() + ca.toString() + t.toString(); :};
+recursion ::= ID:id SEP_LIST:sl recursion:r SEP_LIST:sl2 tipo:t {: VentanaPrincipal.je.append("\n[regla 9] ID, recursion ,tipo");
+                                                                    RESULT = id.toString() + sl.toString() + r.toString() + sl2.toString() + t.toString();
+                                                                    boolean existe = false;
+                                                                    for (String[] simbolo : tabla_de_simbolos) {
+                                                                            if (simbolo[0].equals(id)) {
+                                                                                existe = true;
+                                                                                break;
+                                                                            }
+                                                                        }
+                                                                    if (!existe) {
+                                                                            String[] simbolo = {id.toString(), "ID", t.toString(), "_", "_"};
+                                                                            tabla_de_simbolos.add(simbolo);
+                                                                        }
+                                                                    guardarTablaSimbolos();
+                                                                    :}
+            | ID:id COR_CIERRE:cc DECLARA:d COR_APERTURA:ca tipo:t {: VentanaPrincipal.je.append("\n[regla 10] ID] := [tipo");
+                                                                       RESULT = id.toString() + cc.toString() + d.toString() + ca.toString() + t.toString();
+                                                                       boolean existe = false;
+                                                                           for (String[] simbolo : tabla_de_simbolos) {
+                                                                               if (simbolo[0].equals(id)) {
+                                                                                   existe = true;
+                                                                                   break;
+                                                                               }
+                                                                           }
 
-tipo ::= TIPO_INT:ti {: System.out.println("[regla 11] TIPO_INT"); RESULT = ti;:}
-       | TIPO_FLOAT:tf {: System.out.println("[regla 12] TIPO_FLOAT"); RESULT = tf;:}
-       | TIPO_STRING:ts {: System.out.println("[regla 13] TIPO_STRING"); RESULT = ts;:};
+                                                                           if (!existe) {
+                                                                               String[] simbolo = {id.toString() ,"ID", t.toString(), "_", "_"};
+                                                                               tabla_de_simbolos.add(simbolo);
+                                                                           }
+                                                                           guardarTablaSimbolos();
+                                                                           :};
 
-programa ::= PROGRAM_SECTION:ps bloque_programa:bp ENDPROGRAM_SECTION:eps {: System.out.println("[regla 14] PS bloque_programa EPS  ----> " + ps + bp + eps); RESULT = ps.toString() + bp.toString() + eps.toString(); :};
+tipo ::= TIPO_INT:ti {: VentanaPrincipal.je.append("\n[regla 11] TIPO_INT"); RESULT = ti;:}
+       | TIPO_FLOAT:tf {: VentanaPrincipal.je.append("\n[regla 12] TIPO_FLOAT"); RESULT = tf;:}
+       | TIPO_STRING:ts {: VentanaPrincipal.je.append("\n[regla 13] TIPO_STRING"); RESULT = ts;:};
 
-bloque_programa ::= sentencia:s {: System.out.println("[regla 15] lista_sentencias  ----> " + s); RESULT = s; :}
-                  | bloque_programa:bp sentencia:s {: System.out.println("[regla 16] lista_sentencias sentencia  ----> " + bp + s); RESULT = bp.toString() + s.toString(); :};
+programa ::= PROGRAM_SECTION:ps bloque_programa:bp ENDPROGRAM_SECTION:eps {: VentanaPrincipal.je.append("\n[regla 14] PS bloque_programa EPS  ----> " + ps + bp + eps); RESULT = ps.toString() + bp.toString() + eps.toString(); :};
 
-sentencia ::= asignacion:a {: System.out.println("[regla 17] asignacion  ----> " + a); RESULT = a; :}
-            | iteracion:i {: System.out.println("[regla 18] iteracion  ----> " + i); RESULT = i; :}
-            | seleccion:s {: System.out.println("[regla 19] seleccion  ----> " + s); RESULT = s; :}
-            | escritura:e {: System.out.println("[regla 20] escritura  ----> " + e); RESULT = e; :};
+bloque_programa ::= sentencia:s {: VentanaPrincipal.je.append("\n[regla 15] lista_sentencias  ----> " + s); RESULT = s; :}
+                  | bloque_programa:bp sentencia:s {: VentanaPrincipal.je.append("\n[regla 16] lista_sentencias sentencia  ----> " + bp + s); RESULT = bp.toString() + s.toString(); :};
 
-asignacion ::= ID:id ASIGN:a expresion:e END_LINE:el {: System.out.println("[regla 21] ID ::= expresion  ----> " + id + a + e + el); RESULT = id.toString() + a.toString() + e.toString() + el.toString(); :};
+sentencia ::= asignacion:a {: VentanaPrincipal.je.append("\n[regla 17] asignacion  ----> " + a); RESULT = a; :}
+            | iteracion:i {: VentanaPrincipal.je.append("\n[regla 18] iteracion  ----> " + i); RESULT = i; :}
+            | seleccion:s {: VentanaPrincipal.je.append("\n[regla 19] seleccion  ----> " + s); RESULT = s; :}
+            | escritura:e {: VentanaPrincipal.je.append("\n[regla 20] escritura  ----> " + e); RESULT = e; :};
 
-expresion ::= expresion:e OP_SUMA:os termino:t {: System.out.println("[regla 22] expresion + termino  ----> " + e + os + t); RESULT = e.toString() + os.toString() + t.toString(); :}
-            | expresion:e OP_RESTA:or termino:t {: System.out.println("[regla 23] expresion - termino  ----> " + e + or + t); RESULT = e.toString() + or.toString() + t.toString(); :}
-            | termino:t {: System.out.println("[regla 24] termino  ----> " + t); RESULT = t; :};
+asignacion ::= ID:id ASIGN:a expresion:e END_LINE:el {: VentanaPrincipal.je.append("\n[regla 21] ID ::= expresion  ----> " + id + a + e + el); RESULT = id.toString() + a.toString() + e.toString() + el.toString(); :};
 
-termino ::= termino:t OP_POR:op factor:f {: System.out.println("[regla 25] termino * factor  ----> " + t + op + f); RESULT = t.toString() + op.toString() + f.toString();:}
-          | termino:t OP_DIVISION:od factor:f {: System.out.println("[regla 26] termino / factor  ----> " + t + od + f); RESULT = t.toString() + od.toString() + f.toString();:}
-          | factor:f  {: System.out.println("[regla 27] factor  ----> " + f); RESULT = f;:};
+expresion ::= expresion:e OP_SUMA:os termino:t {: VentanaPrincipal.je.append("\n[regla 22] expresion + termino  ----> " + e + os + t); RESULT = e.toString() + os.toString() + t.toString(); :}
+            | expresion:e OP_RESTA:or termino:t {: VentanaPrincipal.je.append("\n[regla 23] expresion - termino  ----> " + e + or + t); RESULT = e.toString() + or.toString() + t.toString(); :}
+            | termino:t {: VentanaPrincipal.je.append("\n[regla 24] termino  ----> " + t); RESULT = t; :};
 
-factor ::= PAR_APERTURA:pa expresion:ex PAR_CIERRE:pc {: System.out.println("[regla 28] ( expresion )  ----> " + pa + ex + pc); RESULT = pa.toString() + ex.toString() + pc.toString();:}
-         | ID:id {: System.out.println("[regla 29] ID  ----> " + id); RESULT = id;:}
-         | CONST_INT:ci {: System.out.println("[regla 30] CONST_INT  ----> " + ci); RESULT = ci;:}
-         | CONST_FLOAT:cf {: System.out.println("[regla 31] CONST_FLOAT  ----> " + cf); RESULT = cf;:}
-         | CONST_BIN:cb {: System.out.println("[regla 32] CONST_BIN  ----> " + cb); RESULT = cb;:}
-         | CONST_STR:CS {: System.out.println("[regla 33] CONST_STR  ----> " + CS); RESULT = CS;:}
-         | take_cuerpo:tc {: System.out.println("[regla 33.5] take_cuerpo  ----> " + tc); RESULT = tc;:};
+termino ::= termino:t OP_POR:op factor:f {: VentanaPrincipal.je.append("\n[regla 25] termino * factor  ----> " + t + op + f); RESULT = t.toString() + op.toString() + f.toString();:}
+          | termino:t OP_DIVISION:od factor:f {: VentanaPrincipal.je.append("\n[regla 26] termino / factor  ----> " + t + od + f); RESULT = t.toString() + od.toString() + f.toString();:}
+          | factor:f  {: VentanaPrincipal.je.append("\n[regla 27] factor  ----> " + f); RESULT = f;:};
 
-take_cuerpo ::= TAKE:t PAR_APERTURA:pa operador:op END_LINE:el ID:id END_LINE:el2 COR_APERTURA:ca lista_constantes:lc COR_CIERRE:cc PAR_CIERRE:pc END_LINE:el3 {: System.out.println("[regla 34] TAKE (operador;ID;[lista_constantes]);  ----> " + t + pa +op + el + id + el2 + ca + lc + cc + pc + el3 ); RESULT = t.toString() + pa.toString() + op.toString() + el.toString() + id.toString() + el2.toString() + ca.toString() + lc.toString() + cc.toString() + pc.toString() + el3.toString(); :}
-              | TAKE:t PAR_APERTURA:pa operador:op END_LINE:el ID:id END_LINE:el2 COR_APERTURA:ca  COR_CIERRE:cc PAR_CIERRE:pc END_LINE:el3 {: System.out.println("[regla 35] TAKE (operador;ID;[]);  ----> " + t + pa +op + el + id + el2 + ca + cc + pc + el3 ); RESULT = t.toString() + pa.toString() + op.toString() + el.toString() + id.toString() + el2.toString() + ca.toString() + cc.toString() + pc.toString() + el3.toString(); :};
+factor ::= PAR_APERTURA:pa expresion:ex PAR_CIERRE:pc {: VentanaPrincipal.je.append("\n[regla 28] ( expresion )  ----> " + pa + ex + pc); RESULT = pa.toString() + ex.toString() + pc.toString();:}
+         | ID:id {: VentanaPrincipal.je.append("\n[regla 29] ID  ----> " + id); RESULT = id;:}
+         | CONST_INT:ci {: VentanaPrincipal.je.append("\n[regla 30] CONST_INT  ----> " + ci); RESULT = ci;:}
+         | CONST_FLOAT:cf {: VentanaPrincipal.je.append("\n[regla 31] CONST_FLOAT  ----> " + cf); RESULT = cf;:}
+         | CONST_BIN:cb {: VentanaPrincipal.je.append("\n[regla 32] CONST_BIN  ----> " + cb); RESULT = cb;:}
+         | CONST_STR:CS {: VentanaPrincipal.je.append("\n[regla 33] CONST_STR  ----> " + CS); RESULT = CS;:}
+         | take_cuerpo:tc {: VentanaPrincipal.je.append("\n[regla 34] take_cuerpo  ----> " + tc); RESULT = tc;:};
 
-operador ::= OP_SUMA:op {: System.out.println("[regla 36] + "); RESULT = op; :}
-           | OP_POR:op {: System.out.println("[regla 37] * "); RESULT = op; :};
+take_cuerpo ::= TAKE:t PAR_APERTURA:pa operador:op END_LINE:el ID:id END_LINE:el2 COR_APERTURA:ca lista_constantes:lc COR_CIERRE:cc PAR_CIERRE:pc END_LINE:el3 {: VentanaPrincipal.je.append("\n[regla 35] TAKE (operador;ID;[lista_constantes]);  ----> " + t + pa +op + el + id + el2 + ca + lc + cc + pc + el3 ); RESULT = t.toString() + pa.toString() + op.toString() + el.toString() + id.toString() + el2.toString() + ca.toString() + lc.toString() + cc.toString() + pc.toString() + el3.toString(); :}
+              | TAKE:t PAR_APERTURA:pa operador:op END_LINE:el ID:id END_LINE:el2 COR_APERTURA:ca  COR_CIERRE:cc PAR_CIERRE:pc END_LINE:el3 {: VentanaPrincipal.je.append("\n[regla 36] TAKE (operador;ID;[]);  ----> " + t + pa +op + el + id + el2 + ca + cc + pc + el3 ); RESULT = t.toString() + pa.toString() + op.toString() + el.toString() + id.toString() + el2.toString() + ca.toString() + cc.toString() + pc.toString() + el3.toString(); :};
 
-lista_constantes ::= lista_constantes:lc SEP_LIST:sp expresion:e {: System.out.println("[regla 38] lista_constantes,expresion  ----> " + lc + sp + e); RESULT = lc.toString() + sp.toString() + e.toString(); :}
-                   | expresion:ex {: System.out.println("[regla 39] expresion  ----> " + ex); RESULT = ex; :};
+operador ::= OP_SUMA:op {: VentanaPrincipal.je.append("\n[regla 37] + "); RESULT = op; :}
+           | OP_POR:op {: VentanaPrincipal.je.append("\n[regla 38] * "); RESULT = op; :};
 
-iteracion ::= WHILE:w PAR_APERTURA:pa condicion:c PAR_CIERRE:pc bloque_programa:bp {: System.out.println("[regla 40] WHILE (condicion) bloque_programa  ----> " + w + pa + c + pc + bp); RESULT = w.toString() + pa.toString() + c.toString() + pc.toString() + bp.toString(); :};
+lista_constantes ::= lista_constantes:lc SEP_LIST:sp expresion:e {: VentanaPrincipal.je.append("\n[regla 39] lista_constantes,expresion  ----> " + lc + sp + e); RESULT = lc.toString() + sp.toString() + e.toString(); :}
+                   | expresion:ex {: VentanaPrincipal.je.append("\n[regla 40] expresion  ----> " + ex); RESULT = ex; :};
 
-condicion ::= NEGACION:n PAR_APERTURA:pa condicion:c PAR_CIERRE:pc {: System.out.println("[regla 41] !(condicion)  ----> " + n + pa + c + pc); RESULT = n.toString() + pa.toString() + c.toString() + pc.toString(); :}
-            | comparacion:cp {: System.out.println("[regla 42] comparacion  ----> " + cp); RESULT = cp; :}
-            | comparacion:cp1 AND:a comparacion:cp2 {: System.out.println("[regla 43] comparacion && comparacion  ----> " + cp1 + " " + a + " " + cp2); RESULT = cp1.toString() + a.toString() + cp2.toString(); :}
-            | comparacion:cp1 OR:o comparacion:cp2 {: System.out.println("[regla 44] comparacion || comparacion  ----> " + cp1 + " " + o + " " + cp2); RESULT = cp1.toString() + o.toString() + cp2.toString();:};
+iteracion ::= WHILE:w PAR_APERTURA:pa condicion:c PAR_CIERRE:pc bloque_programa:bp {: VentanaPrincipal.je.append("\n[regla 41] WHILE (condicion) bloque_programa  ----> " + w + pa + c + pc + bp); RESULT = w.toString() + pa.toString() + c.toString() + pc.toString() + bp.toString(); :};
 
-comparacion ::= expresion:ex1 comparador:com expresion:ex2 {: System.out.println("[regla 45] expresion comparador expresion  ----> " + ex1 + " " + com + " " + ex2); RESULT = ex1.toString() + com.toString() + ex2.toString(); :};
+condicion ::= NEGACION:n PAR_APERTURA:pa condicion:c PAR_CIERRE:pc {: VentanaPrincipal.je.append("\n[regla 42] !(condicion)  ----> " + n + pa + c + pc); RESULT = n.toString() + pa.toString() + c.toString() + pc.toString(); :}
+            | comparacion:cp {: VentanaPrincipal.je.append("\n[regla 43] comparacion  ----> " + cp); RESULT = cp; :}
+            | comparacion:cp1 AND:a comparacion:cp2 {: VentanaPrincipal.je.append("\n[regla 44] comparacion && comparacion  ----> " + cp1 + " " + a + " " + cp2); RESULT = cp1.toString() + a.toString() + cp2.toString(); :}
+            | comparacion:cp1 OR:o comparacion:cp2 {: VentanaPrincipal.je.append("\n[regla 45] comparacion || comparacion  ----> " + cp1 + " " + o + " " + cp2); RESULT = cp1.toString() + o.toString() + cp2.toString();:};
 
-comparador ::= MAYOR:ma {: System.out.println("[regla 46] >"); RESULT = ma; :}
-             | MENOR:me {: System.out.println("[regla 47] <"); RESULT = me; :}
-             | IGUAL:ig {: System.out.println("[regla 48] =="); RESULT = ig; :}
-             | MAYOR_IGUAL:mai {: System.out.println("[regla 49] >="); RESULT = mai; :}
-             | MENOR_IGUAL:mei {: System.out.println("[regla 50] <="); RESULT = mei; :}
-             | DISTINTO:dis {: System.out.println("[regla 51] != "); RESULT = dis; :};
+comparacion ::= expresion:ex1 comparador:com expresion:ex2 {: VentanaPrincipal.je.append("\n[regla 46] expresion comparador expresion  ----> " + ex1 + " " + com + " " + ex2); RESULT = ex1.toString() + com.toString() + ex2.toString(); :};
 
-seleccion ::= IF:i PAR_APERTURA:pa condicion:c PAR_CIERRE:pc THEN:th bloque_programa:bp1 ELSE:els bloque_programa:bp2 {: System.out.println("[regla 52] IF (condicion) THEN bloque_programa ELSE bloque_programa  ----> " + i + pa + c + pc + th + bp1 + els + bp2); RESULT = i.toString() + pa.toString() + c.toString() + pc.toString() + th.toString() + bp1.toString() + els.toString() + bp2.toString(); :}
-            | IF:i PAR_APERTURA:pa condicion:c PAR_CIERRE:pc THEN:th bloque_programa:bp1 {: System.out.println("[regla 53] IF (condicion) THEN bloque_programa  ----> " + i + pa + c + pc + th + bp1); RESULT = i.toString() + pa.toString() + c.toString() + pc.toString() + th.toString() + bp1.toString(); :};
+comparador ::= MAYOR:ma {: VentanaPrincipal.je.append("\n[regla 47] >"); RESULT = ma; :}
+             | MENOR:me {: VentanaPrincipal.je.append("\n[regla 48] <"); RESULT = me; :}
+             | IGUAL:ig {: VentanaPrincipal.je.append("\n[regla 49] =="); RESULT = ig; :}
+             | MAYOR_IGUAL:mai {: VentanaPrincipal.je.append("\n[regla 50] >="); RESULT = mai; :}
+             | MENOR_IGUAL:mei {: VentanaPrincipal.je.append("\n[regla 51] <="); RESULT = mei; :}
+             | DISTINTO:dis {: VentanaPrincipal.je.append("\n[regla 52] != "); RESULT = dis; :};
 
-escritura ::= WRITE:wr cuerpo_escritura:ce END_LINE:el {: System.out.println("[regla 54] WRITE cuerpo_escritura;  ----> WRITE "+ ce + ";"); RESULT = wr.toString() + ce.toString() + el.toString(); :}
-            | escritura:e WRITE:wr cuerpo_escritura:ce END_LINE:el  {: System.out.println("[regla 55] escritura WRITE cuerpo_escritura;  ----> "+ e + " WRITE " + ce + ";"); RESULT = e.toString() + wr.toString() + ce.toString() + el.toString(); :};
+seleccion ::= IF:i PAR_APERTURA:pa condicion:c PAR_CIERRE:pc THEN:th bloque_programa:bp1 ELSE:els bloque_programa:bp2 {: VentanaPrincipal.je.append("\n[regla 53] IF (condicion) THEN bloque_programa ELSE bloque_programa  ----> " + i + pa + c + pc + th + bp1 + els + bp2); RESULT = i.toString() + pa.toString() + c.toString() + pc.toString() + th.toString() + bp1.toString() + els.toString() + bp2.toString(); :}
+            | IF:i PAR_APERTURA:pa condicion:c PAR_CIERRE:pc THEN:th bloque_programa:bp1 {: VentanaPrincipal.je.append("\n[regla 54] IF (condicion) THEN bloque_programa  ----> " + i + pa + c + pc + th + bp1); RESULT = i.toString() + pa.toString() + c.toString() + pc.toString() + th.toString() + bp1.toString(); :};
 
-cuerpo_escritura ::= CONST_STR:cs {: System.out.println("[regla 58] CONST_STR  ----> " + cs); RESULT = cs;:}
-                   | CONST_INT:ci {: System.out.println("[regla 59] CONST_INT  ----> " + ci); RESULT = ci; :}
-                   | CONST_FLOAT:cf {: System.out.println("[regla 60] CONST_FLOAT  ----> " + cf); RESULT = cf; :}
-                   | CONST_BIN:cb {: System.out.println("[regla 61] CONST_BIN  ----> " + cb); RESULT = cb; :}
-                   | ID:id {: System.out.println("[regla 62] ID  ----> " + id); RESULT = id; :};
+escritura ::= WRITE:wr cuerpo_escritura:ce END_LINE:el {: VentanaPrincipal.je.append("\n[regla 55] WRITE cuerpo_escritura;  ----> WRITE "+ ce + ";"); RESULT = wr.toString() + ce.toString() + el.toString(); :}
+            | escritura:e WRITE:wr cuerpo_escritura:ce END_LINE:el  {: VentanaPrincipal.je.append("\n[regla 56] escritura WRITE cuerpo_escritura;  ----> "+ e + " WRITE " + ce + ";"); RESULT = e.toString() + wr.toString() + ce.toString() + el.toString(); :};
+
+cuerpo_escritura ::= CONST_STR:cs {: VentanaPrincipal.je.append("\n[regla 57] CONST_STR  ----> " + cs); RESULT = cs;:}
+                   | CONST_INT:ci {: VentanaPrincipal.je.append("\n[regla 58] CONST_INT  ----> " + ci); RESULT = ci; :}
+                   | CONST_FLOAT:cf {: VentanaPrincipal.je.append("\n[regla 59] CONST_FLOAT  ----> " + cf); RESULT = cf; :}
+                   | CONST_BIN:cb {: VentanaPrincipal.je.append("\n[regla 60] CONST_BIN  ----> " + cb); RESULT = cb; :}
+                   | ID:id {: VentanaPrincipal.je.append("\n[regla 61] ID  ----> " + id); RESULT = id; :};

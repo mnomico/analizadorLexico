@@ -450,7 +450,7 @@ public class Lexico implements java_cup.runtime.Scanner {
   private boolean zzEOFDone;
 
   /* user code: */
-
+/*
     List<String[]> tabla_de_simbolos = new ArrayList<>();
 
 void guardarTablaSimbolos() {
@@ -471,7 +471,7 @@ void guardarTablaSimbolos() {
         System.err.println("Error al escribir la tabla de símbolos en el archivo: " + e.getMessage());
     }
 }
-
+/*
 
 
   /**
@@ -954,9 +954,11 @@ void guardarTablaSimbolos() {
     if (valor < -32768 || valor > 32767) {
         throw new Error("Caracter inválido: <" + yytext() + "> en la linea " + yyline + " excede el limite de tamaño");
     } else {
+        /*
         String[] simbolo = {"_" + yytext(), "CONST_INT", "_", yytext(), "_"};
         tabla_de_simbolos.add(simbolo);
         guardarTablaSimbolos();
+        */
         return new Symbol(sym.CONST_INT,yytext());
     }
             }
@@ -978,7 +980,8 @@ void guardarTablaSimbolos() {
           // fall through
           case 55: break;
           case 15:
-            { String id = yytext();
+            { /*
+    String id = yytext();
     boolean existe = false;
 
     for (String[] simbolo : tabla_de_simbolos) {
@@ -992,10 +995,9 @@ void guardarTablaSimbolos() {
         String[] simbolo = {id, "ID", "_", "_", "_"};
         tabla_de_simbolos.add(simbolo);
     }
-
-    //String[] simbolo = {yytext(), "ID", "_", "_", "_"};
-    //tabla_de_simbolos.add(simbolo);
     guardarTablaSimbolos();
+    */
+
     return new Symbol(sym.ID,yytext());
             }
           // fall through
@@ -1020,9 +1022,11 @@ void guardarTablaSimbolos() {
     if (value.length() > 32) {
         throw new Error("Caracter inválido: <" + yytext() + "> en la linea " + yyline + " excede el limite de caracteres");
     } else {
+        /*
         String[] simbolo = {"_" + yytext(), "CONST_STR", "_", yytext(), String.valueOf(value.length())};
         tabla_de_simbolos.add(simbolo);
         guardarTablaSimbolos();
+        */
         return new Symbol(sym.CONST_STR,yytext());
     }
             }
@@ -1038,9 +1042,11 @@ void guardarTablaSimbolos() {
     if (valor < -3.4028235E38 || valor > 3.4028235E38) {
         throw new Error("Caracter inválido: <" + yytext() + "> en la linea " + yyline + " excede el limite de tamaño");
     } else {
+        /*
         String[] simbolo = {"_" + yytext(), "CONST_FLOAT", "_", yytext(), "_"};
         tabla_de_simbolos.add(simbolo);
         guardarTablaSimbolos();
+        */
         return new Symbol(sym.CONST_FLOAT,yytext());
     }
             }

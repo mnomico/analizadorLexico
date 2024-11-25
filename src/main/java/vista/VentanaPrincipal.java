@@ -1,6 +1,8 @@
 package vista;
 
 import analizadorLexico.Lexico;
+import analizadorLexico.parser;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
@@ -242,7 +244,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             FileReader lectorArchivo = new FileReader(archivoActual.getSelectedFile().getPath());
             Lexico lexer = new Lexico(lectorArchivo);
             //TODO hacer que Lexer retorne valores y a partir de ahi hacer cosas
-            lexer.next_token();
+            parser sintactico = new parser(lexer);
+            sintactico.parse();
             if (error){
                 consola.setText(je.toString());
             }else {
@@ -255,6 +258,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Error ex){
             consola.append("Error: " + ex.getMessage() + "\n");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }//GEN-LAST:event_bAnalizarActionPerformed
 
