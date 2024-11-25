@@ -39,7 +39,7 @@ action code
         }
     }
 
-    void guardarTipoId() {
+    void guardarTipoId(Object t, String id) {
         boolean existe = false;
         for (String[] simbolo : tabla_de_simbolos) {
             if (simbolo[0].equals(id)) {
@@ -88,12 +88,12 @@ recursion ::= ID:id SEP_LIST:sl recursion:r SEP_LIST:sl2 tipo:t {:
                                                                     VentanaPrincipal.je.append("\n[regla 9] ID, recursion ,tipo");
                                                                     RESULT = id.toString() + sl.toString() + r.toString() + sl2.toString() + t.toString();
                                                                     boolean existe = false;
-                                                                    guardarTipoId();
+                                                                    guardarTipoId(t, id.toString());
                                                                 :}
             | ID:id COR_CIERRE:cc DECLARA:d COR_APERTURA:ca tipo:t {:
                                                                         VentanaPrincipal.je.append("\n[regla 10] ID] := [tipo");
                                                                         RESULT = id.toString() + cc.toString() + d.toString() + ca.toString() + t.toString();
-                                                                        guardarTipoId();
+                                                                        guardarTipoId(t, id.toString());
                                                                    :};
 
 tipo ::= TIPO_INT:ti {: VentanaPrincipal.je.append("\n[regla 11] TIPO_INT"); RESULT = ti;:}
