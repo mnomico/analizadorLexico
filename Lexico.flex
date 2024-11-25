@@ -169,8 +169,9 @@ void guardarTablaSimbolos() {
 }
 
 {CONST_INT} {
+    String largo = String.valueOf(yytext());
     int valor = Integer.parseInt(yytext());
-    if (valor < -32768 || valor > 32767) {
+    if (valor < -32768 || valor > 32767 || largo.length() > 10)  {
         throw new Error("Caracter inválido: <" + yytext() + "> en la linea " + yyline + " excede el limite de tamaño");
     } else {
         /*

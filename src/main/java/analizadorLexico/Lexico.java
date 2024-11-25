@@ -4,12 +4,8 @@
 
 package analizadorLexico;
 import java_cup.runtime.*;
-import java.util.*;
+
 import java.lang.*;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import vista.VentanaPrincipal;
 
 
 @SuppressWarnings("fallthrough")
@@ -471,7 +467,7 @@ void guardarTablaSimbolos() {
         System.err.println("Error al escribir la tabla de símbolos en el archivo: " + e.getMessage());
     }
 }
-/*
+*/
 
 
   /**
@@ -950,8 +946,9 @@ void guardarTablaSimbolos() {
           // fall through
           case 51: break;
           case 11:
-            { int valor = Integer.parseInt(yytext());
-    if (valor < -32768 || valor > 32767) {
+            { String largo = String.valueOf(yytext());
+    int valor = Integer.parseInt(yytext());
+    if (valor < -32768 || valor > 32767 || largo.length() > 10)  {
         throw new Error("Caracter inválido: <" + yytext() + "> en la linea " + yyline + " excede el limite de tamaño");
     } else {
         /*
