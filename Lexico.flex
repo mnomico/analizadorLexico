@@ -49,7 +49,7 @@ void guardarTablaSimbolos() {
         System.err.println("Error al escribir la tabla de símbolos en el archivo: " + e.getMessage());
     }
 }
-/*
+*/
 %}
 
 %%
