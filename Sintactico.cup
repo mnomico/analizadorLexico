@@ -1,4 +1,5 @@
 package analizadorLexico;
+import vista.ErrorSintactico;
 import java_cup.runtime.*;
 import java.util.*;
 import java.lang.*;
@@ -12,7 +13,7 @@ import vista.VentanaPrincipal;
 parser code
 {:
     public void syntax_error(Symbol s) throws ErrorSintactico {
-        throw new ErrorSintactico("Error en la linea " + (s.right+1) + " columna " + s.left + ". " + s + " no reconocido. valor " + s.value);
+        throw new ErrorSintactico("Error en la columna " + (s.right+1) + " Linea " + s.left + ". " + s + " no reconocido. valor " + s.value);
         //VentanaPrincipal.je.append("Error en la linea " + (s.right+1) + " columna " + s.left + ". " + s + " no reconocido. valor " + s.value);
     }
 :}

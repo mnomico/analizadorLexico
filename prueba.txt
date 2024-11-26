@@ -16,27 +16,18 @@ ELSE
 
 //* Asignaciones simples *//
 a ::= 99999.99;
-b::= 99.;
-d::= .9999;
 c ::= "HOLA MUNDO";
-a_b ::= "pruebacon_"
-_b ::= 334
+_b ::= 334;
 
 //* Escritura de valores *//
 WRITE "@sdADaSjfla%dfg";
 WRITE 99.999;
 WRITE var;
 
-//* Este es un comentario anidado
-IF (a <= 30)
-  b ::= "correcto"  asignacion string dentro del comentario
-*//
-
 // y este un comentario de linea
 
 //* Constantes en binario *//
 x ::= 0b101010;
-y ::= 0b1101;
 
 //* Ejemplo de la función TAKE *//
 resul ::= TAKE(+; a; [3, 5, 7]);

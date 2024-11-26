@@ -56,73 +56,73 @@ void guardarTablaSimbolos() {
 
 <YYINITIAL> {
 
-"WHILE"                      {return new Symbol(sym.WHILE,yytext());}
+"WHILE"                      {return new Symbol(sym.WHILE, yyline, yycolumn,yytext());}
 
-"IF"                         {return new Symbol(sym.IF,yytext());}
+"IF"                         {return new Symbol(sym.IF, yyline, yycolumn,yytext());}
 
-"THEN"                       {return new Symbol(sym.THEN,yytext());}
+"THEN"                       {return new Symbol(sym.THEN, yyline, yycolumn,yytext());}
 
-"ELSE"                       {return new Symbol(sym.ELSE,yytext());}
+"ELSE"                       {return new Symbol(sym.ELSE, yyline, yycolumn,yytext());}
 
-"::="                        {return new Symbol(sym.ASIGN,yytext());}
+"::="                        {return new Symbol(sym.ASIGN, yyline, yycolumn,yytext());}
 
-":="                         {return new Symbol(sym.DECLARA,yytext());}
+":="                         {return new Symbol(sym.DECLARA, yyline, yycolumn,yytext());}
 
-"+"                          {return new Symbol(sym.OP_SUMA,yytext());}
+"+"                          {return new Symbol(sym.OP_SUMA, yyline, yycolumn,yytext());}
 
-"*"                          {return new Symbol(sym.OP_POR,yytext());}
+"*"                          {return new Symbol(sym.OP_POR, yyline, yycolumn,yytext());}
 
-"-"                          {return new Symbol(sym.OP_RESTA,yytext());}
+"-"                          {return new Symbol(sym.OP_RESTA, yyline, yycolumn,yytext());}
 
-"/"                          {return new Symbol(sym.OP_DIVISION,yytext());}
+"/"                          {return new Symbol(sym.OP_DIVISION, yyline, yycolumn,yytext());}
 
-"["                          {return new Symbol(sym.COR_APERTURA,yytext());}
+"["                          {return new Symbol(sym.COR_APERTURA, yyline, yycolumn,yytext());}
 
-"]"                          {return new Symbol(sym.COR_CIERRE,yytext());}
+"]"                          {return new Symbol(sym.COR_CIERRE, yyline, yycolumn,yytext());}
 
-"WRITE"                      {return new Symbol(sym.WRITE,yytext());}
+"WRITE"                      {return new Symbol(sym.WRITE, yyline, yycolumn,yytext());}
 
-">"                          {return new Symbol(sym.MAYOR,yytext());}
+">"                          {return new Symbol(sym.MAYOR, yyline, yycolumn,yytext());}
 
-"<"                          {return new Symbol(sym.MENOR,yytext());}
+"<"                          {return new Symbol(sym.MENOR, yyline, yycolumn,yytext());}
 
-">="                         {return new Symbol(sym.MAYOR_IGUAL,yytext());}
+">="                         {return new Symbol(sym.MAYOR_IGUAL, yyline, yycolumn,yytext());}
 
-"<="                         {return new Symbol(sym.MENOR_IGUAL,yytext());}
+"<="                         {return new Symbol(sym.MENOR_IGUAL, yyline, yycolumn,yytext());}
 
-"=="                         {return new Symbol(sym.IGUAL,yytext());}
+"=="                         {return new Symbol(sym.IGUAL, yyline, yycolumn,yytext());}
 
-"!"                          {return new Symbol(sym.NEGACION,yytext());}
+"!"                          {return new Symbol(sym.NEGACION, yyline, yycolumn,yytext());}
 
-"!="                         {return new Symbol(sym.DISTINTO,yytext());}
+"!="                         {return new Symbol(sym.DISTINTO, yyline, yycolumn,yytext());}
 
-"&&"                         {return new Symbol(sym.AND,yytext());}
+"&&"                         {return new Symbol(sym.AND, yyline, yycolumn,yytext());}
 
-"("                          {return new Symbol(sym.PAR_APERTURA,yytext());}
+"("                          {return new Symbol(sym.PAR_APERTURA, yyline, yycolumn,yytext());}
 
-")"                          {return new Symbol(sym.PAR_CIERRE,yytext());}
+")"                          {return new Symbol(sym.PAR_CIERRE, yyline, yycolumn,yytext());}
 
-"||"                         {return new Symbol(sym.OR,yytext());}
+"||"                         {return new Symbol(sym.OR, yyline, yycolumn,yytext());}
 
-"DECLARE.SECTION"            {return new Symbol(sym.DECLARE_SECTION,yytext());}
+"DECLARE.SECTION"            {return new Symbol(sym.DECLARE_SECTION, yyline, yycolumn,yytext());}
 
-"ENDDECLARE.SECTION"         {return new Symbol(sym.ENDDECLARE_SECTION,yytext());}
+"ENDDECLARE.SECTION"         {return new Symbol(sym.ENDDECLARE_SECTION, yyline, yycolumn,yytext());}
 
-"PROGRAM.SECTION"            {return new Symbol(sym.PROGRAM_SECTION,yytext());}
+"PROGRAM.SECTION"            {return new Symbol(sym.PROGRAM_SECTION, yyline, yycolumn,yytext());}
 
-"ENDPROGRAM.SECTION"         {return new Symbol(sym.ENDPROGRAM_SECTION,yytext());}
+"ENDPROGRAM.SECTION"         {return new Symbol(sym.ENDPROGRAM_SECTION, yyline, yycolumn,yytext());}
 
-";"                          {return new Symbol(sym.END_LINE,yytext());}
+";"                          {return new Symbol(sym.END_LINE, yyline, yycolumn,yytext());}
 
-","                          {return new Symbol(sym.SEP_LIST,yytext());}
+","                          {return new Symbol(sym.SEP_LIST, yyline, yycolumn,yytext());}
 
-"INT"                        {return new Symbol(sym.TIPO_INT,yytext());}
+"INT"                        {return new Symbol(sym.TIPO_INT, yyline, yycolumn,yytext());}
 
-"FLOAT"                      {return new Symbol(sym.TIPO_FLOAT,yytext());}
+"FLOAT"                      {return new Symbol(sym.TIPO_FLOAT, yyline, yycolumn,yytext());}
 
-"STRING"                     {return new Symbol(sym.TIPO_STRING,yytext());}
+"STRING"                     {return new Symbol(sym.TIPO_STRING, yyline, yycolumn,yytext());}
 
-"TAKE"                       {return new Symbol(sym.TAKE,yytext());}
+"TAKE"                       {return new Symbol(sym.TAKE, yyline, yycolumn,yytext());}
 
 {ID} {
     /*
@@ -143,10 +143,10 @@ void guardarTablaSimbolos() {
     guardarTablaSimbolos();
     */
 
-    return new Symbol(sym.ID,yytext());
+    return new Symbol(sym.ID,yyline, yycolumn,yytext());
 }
 
-{CONST_BIN}                  {return new Symbol(sym.CONST_BIN,yytext());}
+{CONST_BIN}                  {return new Symbol(sym.CONST_BIN, yyline, yycolumn,yytext());}
 
 {ESPACIO}                    {}
 
@@ -164,7 +164,7 @@ void guardarTablaSimbolos() {
         tabla_de_simbolos.add(simbolo);
         guardarTablaSimbolos();
         */
-        return new Symbol(sym.CONST_FLOAT,yytext());
+        return new Symbol(sym.CONST_FLOAT, yyline, yycolumn,yytext());
     }
 }
 
@@ -179,7 +179,7 @@ void guardarTablaSimbolos() {
         tabla_de_simbolos.add(simbolo);
         guardarTablaSimbolos();
         */
-        return new Symbol(sym.CONST_INT,yytext());
+        return new Symbol(sym.CONST_INT,yyline, yycolumn,yytext());
     }
 }
 
@@ -193,7 +193,7 @@ void guardarTablaSimbolos() {
         tabla_de_simbolos.add(simbolo);
         guardarTablaSimbolos();
         */
-        return new Symbol(sym.CONST_STR,yytext());
+        return new Symbol(sym.CONST_STR, yyline, yycolumn,yytext());
     }
 }
 
