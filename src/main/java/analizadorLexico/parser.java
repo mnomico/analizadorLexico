@@ -295,7 +295,7 @@ public class parser extends java_cup.runtime.lr_parser {
 
 
     public void syntax_error(Symbol s) throws ErrorSintactico {
-        throw new ErrorSintactico("Error en la columna " + (s.right+1) + " Linea " + s.left + ". " + s + " no reconocido. valor " + s.value);
+        throw new ErrorSintactico("Error en la columna " + (s.right+1) + " Linea " + (s.left+1) + ". " + s + " no reconocido. valor " + s.value);
         //VentanaPrincipal.je.append("Error en la linea " + (s.right+1) + " columna " + s.left + ". " + s + " no reconocido. valor " + s.value);
     }
 
