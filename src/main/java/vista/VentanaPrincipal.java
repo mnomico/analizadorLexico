@@ -44,9 +44,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     case 0 -> {
                         // No pasa nada
                     }
-                    case 1 -> {
-                        dispose();
-                    }
+                    case 1 -> dispose();
                 }
             }
         });
@@ -256,10 +254,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Error ex){
+        } catch (Error ex) {
             consola.append("Error: " + ex.getMessage() + "\n");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            consola.append("Error: " + e.getMessage() + "\n");
         }
     }//GEN-LAST:event_bAnalizarActionPerformed
 
@@ -297,10 +295,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         abrirArchivo();
                     }
                 }
-                case 1 -> {
-                    // Abre el archivo sin guardar lo anterior
-                    abrirArchivo();
-                }
+                case 1 -> abrirArchivo(); // Abre el archivo sin guardar lo anterior
                 case 2, -1 -> {
                     // No hacer nada
                 }
@@ -324,10 +319,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         nuevoArchivo();
                     }
                 }
-                case 1 -> {
-                    // Limpiar el editor de texto sin guardar nada
-                    nuevoArchivo();
-                }
+                case 1 -> nuevoArchivo(); // Limpiar el editor de texto sin guardar nada
+
             }
         } else {
             nuevoArchivo();
@@ -406,7 +399,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
         
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
