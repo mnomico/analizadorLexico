@@ -3,6 +3,9 @@ import java_cup.runtime.*;
 import java.util.*;
 import java.lang.*;
 import jflex.core.sym;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import vista.VentanaPrincipal;
 
 %%
@@ -14,6 +17,7 @@ import vista.VentanaPrincipal;
 %column
 %char
 
+// definicion de la estructura de ciertos tokens
 LETRA = [a-zA-Z]
 DIGITO = [0-9]
 ESPACIO = [ \t\f\n\r\n]+
@@ -25,117 +29,124 @@ CONST_STR = \" (.{0,30}) \"
 COMENTARIO_BLOQUE = "//*"([^*]|"*"+[^/])*"*//"
 COMENTARIO_LINEA = "//" ~[\n]
 
+// sector de codigo java que podemos agregar nosotros
+%{
+    List<String[]> tabla_de_simbolos = new ArrayList<>();
+
+void guardarTablaSimbolos() {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("tabla_de_simbolos.txt"))) {
+        // Columnas
+        writer.write(String.format("%-50s %-15s %-20s %-50s %-5s", "Nombre", "Token", "Tipo", "Valor", "Long"));
+        writer.newLine();
+        writer.write("--------------------------------------------------------------------------------------------------------------------------------------------------------");
+        writer.newLine();
+
+        // Filas
+        for (String[] simbolo : tabla_de_simbolos) {
+            writer.write(String.format("%-50s %-15s %-20s %-50s %-5s", simbolo[0], simbolo[1], simbolo[2], simbolo[3], simbolo[4]));
+            writer.newLine();
+        }
+
+    } catch (IOException e) {
+        System.err.println("Error al escribir la tabla de símbolos en el archivo: " + e.getMessage());
+    }
+}
+%}
+
 %%
 
-<YYINITIAL> {
+<YYINITIAL> { // sector donde se declaran todos los tokens y que accion hacer al encontrarlos (mostrarlo por la vista)
 
-"WHILE"                      {System.out.println("Token WHILE encontrado, Lexema "+ yytext());
-                              VentanaPrincipal.je.append("Token WHILE encontrado, Lexema "+yytext());                          }
+"WHILE"                      {VentanaPrincipal.je.append("Token WHILE encontrado, Lexema "+yytext());}
 
-"IF"                         {System.out.println("Token IF encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token IF encontrado, Lexema "+yytext()+ "\n"); }
+"IF"                         {VentanaPrincipal.je.append("Token IF encontrado, Lexema "+yytext()+ "\n"); }
 
-"THEN"                       {System.out.println("Token THEN encontrado, Lexema "+ yytext());
-       VentanaPrincipal.je.append("Token THEN encontrado, Lexema "+yytext()+"\n");}
+"THEN"                       {VentanaPrincipal.je.append("Token THEN encontrado, Lexema "+yytext()+"\n");}
 
-"ELSE"                       {System.out.println("Token ELSE encontrado, Lexema "+ yytext());
-       VentanaPrincipal.je.append("Token ELSE encontrado, Lexema "+yytext()+"\n");}
+"ELSE"                       {VentanaPrincipal.je.append("Token ELSE encontrado, Lexema "+yytext()+"\n");}
 
-"::="                        {System.out.println("Token ASIGN encontrado, Lexema "+ yytext());
-       VentanaPrincipal.je.append("Token ASIGN encontrado, Lexema "+yytext()+"\n");}
+"::="                        {VentanaPrincipal.je.append("Token ASIGN encontrado, Lexema "+yytext()+"\n");}
 
-":="                         {System.out.println("Token DECLARA encontrado, Lexema "+ yytext());
-       VentanaPrincipal.je.append("Token DECLARA encontrado, Lexema "+yytext()+"\n");}
+":="                         {VentanaPrincipal.je.append("Token DECLARA encontrado, Lexema "+yytext()+"\n");}
 
-"+"                          {System.out.println("Token SUMA encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token SUMA encontrado, Lexema "+yytext()+"\n");}
+"+"                          {VentanaPrincipal.je.append("Token SUMA encontrado, Lexema "+yytext()+"\n");}
 
-"*"                          {System.out.println("Token MULTIPLICACION encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token MULTIPLICACION encontrado, Lexema "+yytext()+"\n");}
+"*"                          {VentanaPrincipal.je.append("Token MULTIPLICACION encontrado, Lexema "+yytext()+"\n");}
 
-"-"                          {System.out.println("Token RESTA encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token RESTA encontrado, Lexema "+yytext()+"\n");}
+"-"                          {VentanaPrincipal.je.append("Token RESTA encontrado, Lexema "+yytext()+"\n");}
 
-"/"                          {System.out.println("Token DIVISION encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token DIVISION encontrado, Lexema "+yytext()+"\n");}
+"/"                          {VentanaPrincipal.je.append("Token DIVISION encontrado, Lexema "+yytext()+"\n");}
 
-"["                          {System.out.println("Token APERTURA encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token APERTURA encontrado, Lexema "+yytext()+"\n");}
+"["                          {VentanaPrincipal.je.append("Token APERTURA encontrado, Lexema "+yytext()+"\n");}
 
-"]"                          {System.out.println("Token CIERRE encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token CIERRE encontrado, Lexema "+yytext()+"\n");}
+"]"                          {VentanaPrincipal.je.append("Token CIERRE encontrado, Lexema "+yytext()+"\n");}
 
-"WRITE"                      {System.out.println("Token WRITE encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token WRITE encontrado, Lexema "+yytext()+"\n");}
+"WRITE"                      {VentanaPrincipal.je.append("Token WRITE encontrado, Lexema "+yytext()+"\n");}
 
-">"                          {System.out.println("Token MAYOR encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token MAYOR encontrado, Lexema "+yytext()+"\n");}
+">"                          {VentanaPrincipal.je.append("Token MAYOR encontrado, Lexema "+yytext()+"\n");}
 
-"<"                          {System.out.println("Token MENOR encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token MENOR encontrado, Lexema "+yytext()+"\n");}
+"<"                          {VentanaPrincipal.je.append("Token MENOR encontrado, Lexema "+yytext()+"\n");}
 
-">="                         {System.out.println("Token MAYOR_IGUAL encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token MAYOR_IGUAL encontrado, Lexema "+yytext()+"\n");}
+">="                         {VentanaPrincipal.je.append("Token MAYOR_IGUAL encontrado, Lexema "+yytext()+"\n");}
 
-"<="                         {System.out.println("Token MENOR_IGUAL encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token MENOR_IGUAL encontrado, Lexema "+yytext()+"\n");}
+"<="                         {VentanaPrincipal.je.append("Token MENOR_IGUAL encontrado, Lexema "+yytext()+"\n");}
 
-"=="                         {System.out.println("Token COMPARAR_IGUAL encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token COMPARAR_IGUAL encontrado, Lexema "+yytext()+"\n");}
+"=="                         {VentanaPrincipal.je.append("Token COMPARAR_IGUAL encontrado, Lexema "+yytext()+"\n");}
 
-"!"                          {System.out.println("Token NEGACION encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token NEGACION encontrado, Lexema "+yytext()+"\n");}
+"!"                          {VentanaPrincipal.je.append("Token NEGACION encontrado, Lexema "+yytext()+"\n");}
 
-"!="                         {System.out.println("Token DISTINTO encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token DISTINTO encontrado, Lexema "+yytext()+"\n");}
+"!="                         {VentanaPrincipal.je.append("Token DISTINTO encontrado, Lexema "+yytext()+"\n");}
 
-"&&"                         {System.out.println("Token AND encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token AND encontrado, Lexema "+yytext()+"\n");}
+"&&"                         {VentanaPrincipal.je.append("Token AND encontrado, Lexema "+yytext()+"\n");}
 
-"("                          {System.out.println("Token ABRIR_PARENTESIS encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token ABRIR_PARENTESIS encontrado, Lexema "+yytext()+"\n");}
+"("                          {VentanaPrincipal.je.append("Token ABRIR_PARENTESIS encontrado, Lexema "+yytext()+"\n");}
 
-")"                          {System.out.println("Token CERRAR_PARENTESIS encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token CERRAR_PARENTESIS encontrado, Lexema "+yytext()+"\n");}
+")"                          {VentanaPrincipal.je.append("Token CERRAR_PARENTESIS encontrado, Lexema "+yytext()+"\n");}
 
-"||"                         {System.out.println("Token OR encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token OR encontrado, Lexema "+yytext()+"\n");}
+"||"                         {VentanaPrincipal.je.append("Token OR encontrado, Lexema "+yytext()+"\n");}
 
-"DECLARE.SECTION"            {System.out.println("Token DECLARE_SECTION encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token DECLARE_SECTION encontrado, Lexema "+yytext()+"\n");}
+"DECLARE.SECTION"            {VentanaPrincipal.je.append("Token DECLARE_SECTION encontrado, Lexema "+yytext()+"\n");}
 
-"ENDDECLARE.SECTION"         {System.out.println("Token ENDDECLARE_SECTION encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token ENDDECLARE_SECTION encontrado, Lexema "+yytext()+"\n");}
+"ENDDECLARE.SECTION"         {VentanaPrincipal.je.append("Token ENDDECLARE_SECTION encontrado, Lexema "+yytext()+"\n");}
 
-"PROGRAM.SECTION"            {System.out.println("Token PROGRAM.SECTION encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token PROGRAM.SECTION encontrado, Lexema "+yytext()+"\n");}
+"PROGRAM.SECTION"            {VentanaPrincipal.je.append("Token PROGRAM.SECTION encontrado, Lexema "+yytext()+"\n");}
 
-"ENDPROGRAM.SECTION"         {System.out.println("Token ENDPROGRAM.SECTION  encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token ENDPROGRAM.SECTION encontrado, Lexema "+yytext()+"\n");}
+"ENDPROGRAM.SECTION"         {VentanaPrincipal.je.append("Token ENDPROGRAM.SECTION encontrado, Lexema "+yytext()+"\n");}
 
-";"                          {System.out.println("Token TERMINACION_LINEA encontrado, Lexema "+ yytext());
-      VentanaPrincipal.je.append("Token TERMINACION_LINEA encontrado, Lexema "+yytext()+"\n");}
+";"                          {VentanaPrincipal.je.append("Token TERMINACION_LINEA encontrado, Lexema "+yytext()+"\n");}
 
-","                          {System.out.println("Token SEP_LISTA encontrado, Lexema "+ yytext());
-                              VentanaPrincipal.je.append("Token SEP_LISTA encontrado, Lexema "+yytext()+"\n");}
+","                          {VentanaPrincipal.je.append("Token SEP_LISTA encontrado, Lexema "+yytext()+"\n");}
 
-"INT"                        {System.out.println("Token TIPO_INT encontrado, Lexema "+ yytext());
-                              VentanaPrincipal.je.append("Token TIPO_INT encontrado, Lexema "+yytext()+"\n");}
+"INT"                        {VentanaPrincipal.je.append("Token TIPO_INT encontrado, Lexema "+yytext()+"\n");}
 
-"FLOAT"                      {System.out.println("Token TIPO_FLOAT encontrado, Lexema "+ yytext());
-                              VentanaPrincipal.je.append("Token TIPO_FLOAT encontrado, Lexema "+yytext()+"\n");}
+"FLOAT"                      {VentanaPrincipal.je.append("Token TIPO_FLOAT encontrado, Lexema "+yytext()+"\n");}
 
-"STRING"                     {System.out.println("Token TIPO_STRING encontrado, Lexema "+ yytext());
-                              VentanaPrincipal.je.append("Token TIPO_STRING encontrado, Lexema "+yytext()+"\n");}
+"STRING"                     {VentanaPrincipal.je.append("Token TIPO_STRING encontrado, Lexema "+yytext()+"\n");}
 
-"TAKE"                       {System.out.println("Token TAKE encontrado, Lexema "+ yytext());
-                              VentanaPrincipal.je.append("Token TAKE encontrado, Lexema "+yytext()+"\n");}
+"TAKE"                       {VentanaPrincipal.je.append("Token TAKE encontrado, Lexema "+yytext()+"\n");}
 
-{ID}                         {System.out.println("Token ID encontrado, lexema " + yytext());
-                              VentanaPrincipal.je.append("Token ID encontrado, Lexema "+yytext()+"\n");}
+{ID} {
+    // Actualizacion de la tabla de simbolo al encontrar el token ID
+    String id = yytext();
+    boolean existe = false;
 
-{CONST_BIN}                  {System.out.println("Token CONST_BIN encontrado, lexema " + yytext());
-                              VentanaPrincipal.je.append("Token CONST_BIN encontrado, Lexema "+yytext()+"\n");}
+    for (String[] simbolo : tabla_de_simbolos) {
+        if (simbolo[0].equals(id)) {
+            existe = true;
+            break;
+        }
+    }
+
+    if (!existe) {
+        // agregar la ID en la tabla de simbolo
+        String[] simbolo = {id, "ID", "_", "_", "_"};
+        tabla_de_simbolos.add(simbolo);
+    }
+    guardarTablaSimbolos();
+    VentanaPrincipal.je.append("Token ID encontrado, Lexema "+yytext()+"\n");
+}
+
+{CONST_BIN}                  {VentanaPrincipal.je.append("Token CONST_BIN encontrado, Lexema "+yytext()+"\n");}
 
 {ESPACIO}                    {}
 
@@ -144,35 +155,47 @@ COMENTARIO_LINEA = "//" ~[\n]
 {COMENTARIO_LINEA}           {}
 
 {CONST_FLOAT} {
-        float valor = Float.parseFloat(yytext());
-        if (valor < -3.4028235E38|| valor > 3.4028235E38) {
-            throw new Error("Caracter inválido: <" + yytext() + "> en la linea" + yyline + " excede el limite de tamaño");
-        } else {
-
-            System.out.println("Token CONST_FLOAT encontrado, lexema " + yytext());
-            VentanaPrincipal.je.append("Token CONST_FLOAT encontrado, Lexema "+yytext()+"\n");
-        }
+    // control del tamaño del float
+    float valor = Float.parseFloat(yytext());
+    if (valor < -3.4028235E38 || valor > 3.4028235E38) {
+        throw new Error("Caracter inválido: <" + yytext() + "> en la linea " + yyline + " excede el limite de tamaño");
+    } else {
+        // agregar la constante float en la tabla de simbolo
+        String[] simbolo = {"_" + yytext(), "CONST_FLOAT", "_", yytext(), "_"};
+        tabla_de_simbolos.add(simbolo);
+        guardarTablaSimbolos();
+        VentanaPrincipal.je.append("Token CONST_FLOAT encontrado, Lexema "+yytext()+"\n");
+    }
 }
 
 {CONST_INT} {
-        int valor = Integer.parseInt(yytext());
-        if (valor < -32768 || valor > 32767) {
-            throw new Error("Caracter inválido: <" + yytext() + "> en la linea " + yyline + " excede el limite de tamaño");
-        } else {
-            System.out.println("Token CONST_INT encontrado, lexema " + yytext());
-            VentanaPrincipal.je.append("Token CONST_INT encontrado, Lexema "+yytext()+"\n");
-        }
+    // control del tamaño del valor del entero y su cantidad de digitos
+    String largo = String.valueOf(yytext());
+    int valor = Integer.parseInt(yytext());
+    if (valor < -32768 || valor > 32767 || largo.length() > 10)  {
+        throw new Error("Caracter inválido: <" + yytext() + "> en la linea " + yyline + " excede el limite de tamaño");
+    } else {
+        // agregar la constante INT en la tabla de simbolo
+        String[] simbolo = {"_" + yytext(), "CONST_INT", "_", yytext(), "_"};
+        tabla_de_simbolos.add(simbolo);
+        guardarTablaSimbolos();
+        VentanaPrincipal.je.append("Token CONST_INT encontrado, Lexema "+yytext()+"\n");
+    }
 }
 
 {CONST_STR} {
-        String value = yytext();
-        if (value.length() > 32) {
-            throw new Error("Caracter inválido: <" + yytext() + "> en la linea " + yyline + " excede el limite de caracteres");
-        } else {
-            System.out.println("Token CONST_STR encontrado, lexema " + yytext());
-            VentanaPrincipal.je.append("Token CONST_STR encontrado, Lexema "+yytext()+"\n");
-        }
+    // control de la longitud del string
+    String value = yytext();
+    if (value.length() > 32) {
+        throw new Error("Caracter inválido: <" + yytext() + "> en la linea " + yyline + " excede el limite de caracteres");
+    } else {
+        // agregar la constante string en la tabla de simbolo
+        String[] simbolo = {"_" + yytext(), "CONST_STR", "_", yytext(), String.valueOf(value.length())};
+        tabla_de_simbolos.add(simbolo);
+        guardarTablaSimbolos();
+        VentanaPrincipal.je.append("Token CONST_STR encontrado, Lexema "+yytext()+"\n");
     }
+}
 
 }
 
